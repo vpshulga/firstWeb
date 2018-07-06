@@ -17,6 +17,11 @@
         <servlet-name>DBCounter</servlet-name>
         <servlet-class>web.DbCounterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BdServlet</servlet-name>
+        <servlet-class>web.BdServlet</servlet-class>
+    </servlet>
+
     
     <servlet-mapping>
         <servlet-name>Hello</servlet-name>
@@ -30,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>DBCounter</servlet-name>
         <url-pattern>/main</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BdServlet</servlet-name>
+        <url-pattern>/bd</url-pattern>
     </servlet-mapping>
 
 </web-app>
