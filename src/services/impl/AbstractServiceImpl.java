@@ -1,11 +1,11 @@
 package services.impl;
 
-import db.ConnectorManager;
+import db.ConnectionManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class AbstractServiceImpl {
-    private Connection connection = ConnectorManager.getConnection();
+    private Connection connection = ConnectionManager.getConnection();
 
     public void startTransaction() throws SQLException {
         connection.setAutoCommit(false);

@@ -1,7 +1,7 @@
 package dao.impl;
 
 import dao.PatientDAO;
-import db.ConnectorManager;
+import db.ConnectionManager;
 import entities.Patient;
 
 import enums.Sex;
@@ -38,12 +38,12 @@ public class PatientDAOImpl implements PatientDAO {
 
     {
         try {
-            Connection connection = ConnectorManager.getConnection();
+            Connection connection = ConnectionManager.getConnection();
             psAddressSave = connection.prepareStatement(saveAddressQuery, Statement.RETURN_GENERATED_KEYS);
-            psPatientSave = ConnectorManager.getConnection().prepareStatement(savePatientQuery, Statement.RETURN_GENERATED_KEYS);
+            psPatientSave = ConnectionManager.getConnection().prepareStatement(savePatientQuery, Statement.RETURN_GENERATED_KEYS);
 
             psPatientUpdate = connection.prepareStatement(updatePatientQuery);
-            psAddressUpdate = ConnectorManager.getConnection().prepareStatement(updateAddressQuery, Statement.RETURN_GENERATED_KEYS);
+            psAddressUpdate = ConnectionManager.getConnection().prepareStatement(updateAddressQuery, Statement.RETURN_GENERATED_KEYS);
 
             psPatientGet = connection.prepareStatement(getPatientQuery);
             psAddressGet = connection.prepareStatement(getAddressQuery);

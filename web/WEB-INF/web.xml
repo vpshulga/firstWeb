@@ -5,40 +5,6 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
            version="3.1">
     <display-name>New Servlet App</display-name>
-    <servlet>
-        <servlet-name>Hello</servlet-name>
-        <servlet-class>web.HelloServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Counter</servlet-name>
-        <servlet-class>web.CounterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DBCounter</servlet-name>
-        <servlet-class>web.DbCounterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BdServlet</servlet-name>
-        <servlet-class>web.BdServlet</servlet-class>
-    </servlet>
 
-    
-    <servlet-mapping>
-        <servlet-name>Hello</servlet-name>
-        <url-pattern>/sayhello</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>Counter</servlet-name>
-        <url-pattern>/counter</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DBCounter</servlet-name>
-        <url-pattern>/main</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BdServlet</servlet-name>
-        <url-pattern>/bd</url-pattern>
-    </servlet-mapping>
 
 </web-app>

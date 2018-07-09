@@ -1,0 +1,110 @@
+-- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: hospital
+-- ------------------------------------------------------
+-- Server version	8.0.11
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8mb4 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city` varchar(50) DEFAULT NULL,
+  `street` varchar(50) DEFAULT NULL,
+  `house` int(3) DEFAULT NULL,
+  `apartament` int(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (3,'Minsk','Gintovta',85,91),(4,'Minsk','Gintovta',85,91),(5,'Minsk','Gintovta',85,91),(6,'Minsk','Gintovta',83,96),(8,'Minsk','Gintovta',83,966),(9,'London','Baker',10,12),(10,'Minsk','Esenina',81,92),(11,'Minsk','Esenina',81,92),(12,'Minsk','Esenina',81,92),(13,'Minsk','Esenina',81,92),(14,'Minsk','Esenina',81,92),(15,'Minsk','Esenina',81,92),(21,'Minsk','Surganova',6,211),(22,'Minsk','Surganova',6,211),(23,'Minsk','Surganova',6,211),(24,'Minsk','Surganova',6,211),(25,'Minsk','Surganova',6,211),(26,'Minsk','Surganova',6,211),(28,'Moscow','Lubianka',1,1),(29,'Moscow','Lubianka',1,1),(30,'Moscow','Lubianka',1,1),(31,'Moscow','Lubianka',1,1),(32,'Moscow','Lubianka',1,1),(33,'Moscow','Lubianka',1,1),(34,'Moscow','Lubianka',1,1),(35,'Moscow','Lubianka',1,1),(38,'Moscow','Lubianka',1,1),(41,'Moscow','Lubianka',1,1),(42,'Minsk','Surganova',6,211),(43,'Minsk','Surganova',6,211),(44,'Minsk','Surganova',6,211),(45,'Minsk','Surganova',6,211),(46,'Minsk','Surganova',6,211),(47,'Minsk','Surganova',6,211),(48,'Minsk','Surganova',6,211),(49,'Minsk','Surganova',6,211),(50,'Minsk','Surganova',6,211),(51,'Minsk','Surganova',6,211),(52,'Minsk','Surganova',6,211),(53,'Minsk','Surganova',6,211),(54,'Minsk','Surganova',6,211),(55,'Minsk','Surganova',6,211),(56,'Minsk','Surganova',6,211),(57,'Minsk','Surganova',6,211),(58,'Minsk','Surganova',6,211),(61,'Moscow','Lubianka',1,1),(63,'Moscow','Lubianka',1,1),(64,'Moscow','Lubianka',1,1),(65,'Moscow','Lubianka',1,1),(66,'Moscow','Lubianka',1,1),(68,'Moscow','Lubianka',1,1);
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patients`
+--
+
+DROP TABLE IF EXISTS `patients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `patients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `age` int(11) NOT NULL,
+  `sex` enum('MALE','FEMALE','UNDEFINED') DEFAULT NULL,
+  `address` int(11) DEFAULT NULL,
+  `complaint` blob,
+  PRIMARY KEY (`id`),
+  KEY `patients_addresses_id_fk` (`address`),
+  CONSTRAINT `patients_addresses_id_fk` FOREIGN KEY (`address`) REFERENCES `addresses` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patients`
+--
+
+LOCK TABLES `patients` WRITE;
+/*!40000 ALTER TABLE `patients` DISABLE KEYS */;
+INSERT INTO `patients` VALUES (4,'stas','mikhailov',22,'FEMALE',8,'bolit noga'),(5,'Vlad','Petrov',21,'MALE',9,'Ustal'),(6,'Valera','Petrov',24,'MALE',10,'bolit golova'),(7,'Valera','Petrov',24,'MALE',11,'bolit golova'),(8,'Valera','Petrov',24,'MALE',12,'bolit golova'),(9,'Valera','Petrov',24,'MALE',13,'bolit golova'),(10,'Valera','Petrov',24,'MALE',14,'bolit golova'),(11,'Valera','Petrov',24,'MALE',15,'bolit golova'),(17,'Valera','b',10,'MALE',21,'new complaint'),(18,'a','b',10,'MALE',22,'new complaint'),(19,'a','b',10,'MALE',23,'new complaint'),(20,'a','b',10,'MALE',24,'new complaint'),(21,'a','b',10,'MALE',25,'new complaint'),(22,'a','b',10,'MALE',26,'new complaint'),(24,'Vladimir','Putin',65,'UNDEFINED',28,'Ustal'),(25,'Vladimir','Putin',65,'UNDEFINED',29,'Ustal'),(26,'Vladimir','Putin',65,'UNDEFINED',30,'Ustal'),(27,'Vladimir','Putin',65,'UNDEFINED',31,'Ustal'),(28,'Vladimir','Putin',65,'UNDEFINED',32,'Ustal'),(29,'Vladimir','Putin',65,'UNDEFINED',33,'Ustal'),(30,'Vladimir','Putin',65,'UNDEFINED',34,'Ustal'),(31,'Vladimir','Putin',65,'UNDEFINED',35,'Ustal'),(34,'Alexander','Putin',65,'UNDEFINED',38,'Ustal'),(37,'Alexander','Putin',65,'UNDEFINED',41,'Ustal'),(38,'Valera','b',10,'MALE',42,'new complaint'),(39,'Valera','b',10,'MALE',43,'new complaint'),(40,'Valera','b',10,'MALE',44,'new complaint'),(41,'a','b',10,'MALE',45,'new complaint'),(42,'a','b',10,'MALE',46,'new complaint'),(43,'Valera','b',10,'MALE',47,'new complaint'),(44,'Valera','b',10,'MALE',48,'new complaint'),(45,'Valera','b',10,'MALE',49,'new complaint'),(46,'Valera','b',10,'MALE',50,'new complaint'),(47,'Valera','b',10,'MALE',51,'new complaint'),(48,'Valera','b',10,'MALE',52,'new complaint'),(49,'Valera','b',10,'MALE',53,'new complaint'),(50,'Valera','b',10,'MALE',54,'new complaint'),(51,'Valera','b',10,'MALE',55,'new complaint'),(52,'a','b',10,'MALE',56,'new complaint'),(53,'Valera','b',10,'MALE',57,'new complaint'),(54,'Valera','b',10,'MALE',58,'new complaint'),(57,'Alexander','Putin',65,'UNDEFINED',61,'Ustal'),(59,'Alexander','Putin',65,'UNDEFINED',63,'Ustal'),(60,'Alexander','Putin',65,'UNDEFINED',64,'Ustal'),(61,'Alexander','Putin',65,'UNDEFINED',65,'Ustal'),(62,'Alexander','Putin',65,'UNDEFINED',66,'Ustal'),(64,'Alexander','Putin',65,'UNDEFINED',68,'Ustal');
+/*!40000 ALTER TABLE `patients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test`
+--
+
+DROP TABLE IF EXISTS `test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `value` varchar(3) DEFAULT NULL,
+  `value1` int(11) DEFAULT NULL,
+  `value2` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=77170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test`
+--
+
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-07-09 17:03:42
