@@ -7,6 +7,9 @@ public abstract class MedWorker extends Person {
     private Educations education;
     private int experience;
 
+    public MedWorker() {
+    }
+
     public MedWorker(String firstName, String secondName, int age, Sex sex,
                      Educations education, int experience) {
         super(firstName, secondName, age, sex);

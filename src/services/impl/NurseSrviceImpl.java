@@ -1,46 +1,45 @@
 package services.impl;
 
-import dao.PatientDAO;
-import dao.impl.PatientDAOImpl;
-import entities.Patient;
-import services.PatientService;
+import dao.NurseDAO;
+import dao.impl.NurseDAOImpl;
+import entities.Nurse;
 import java.io.Serializable;
 import java.sql.SQLException;
+import services.NurseService;
 
-public class PatientServiceImpl extends AbstractServiceImpl implements PatientService {
-    private PatientDAO patientDAO = PatientDAOImpl.getInstance();
+public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService {
+    private NurseDAO nurseDAO = NurseDAOImpl.getInstance();
 
     @Override
-    public Patient save(Patient patient) {
+    public Nurse save(Nurse nurse) {
         try {
             startTransaction();
-            patient = patientDAO.save(patient);
+            nurseDAO.save(nurse);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return patient;
+        return nurse;
     }
 
     @Override
-    public Patient get(Serializable id) {
-        Patient patient = new Patient();
+    public Nurse get(Serializable id) {
+        Nurse nurse = new Nurse();
         try {
             startTransaction();
-            patient = patientDAO.get(id);
+            nurse = nurseDAO.get(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return patient;
+        return nurse;
     }
 
     @Override
-    public void update(Patient patient) {
-
+    public void update(Nurse nurse) {
         try {
             startTransaction();
-            patientDAO.update(patient);
+            nurseDAO.update(nurse);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,14 +48,14 @@ public class PatientServiceImpl extends AbstractServiceImpl implements PatientSe
 
     @Override
     public int delete(Serializable id) {
-        int countDeletedRows = 0;
+        int countRows = 0;
         try {
             startTransaction();
-            countDeletedRows = patientDAO.delete(id);
+            countRows = nurseDAO.delete(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return countDeletedRows;
+        return countRows;
     }
 }

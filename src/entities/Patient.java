@@ -9,19 +9,23 @@ public class Patient extends Person {
     private int house;
     private int apartment;
     private String complaint;
+    private int doctorId;
+    private boolean status;
 
     public Patient() {
 
     }
 
     public Patient(String firstName, String secondName, int age, Sex sex,
-                   String cyty, String street, int house, int apartment, String complaint) {
+                   String cyty, String street, int house, int apartment, String complaint, int doctorId, boolean status) {
         super(firstName, secondName, age, sex);
         this.city = cyty;
         this.street = street;
         this.house = house;
         this.apartment = apartment;
         this.complaint = complaint;
+        this.doctorId = doctorId;
+        this.status = status;
     }
 
     public int getId() {
@@ -70,6 +74,22 @@ public class Patient extends Person {
 
     public void setComplaint(String complaint) {
         this.complaint = complaint;
+    }
+
+    public int getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override

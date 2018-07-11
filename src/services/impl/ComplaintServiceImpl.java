@@ -1,46 +1,45 @@
 package services.impl;
 
-import dao.PatientDAO;
-import dao.impl.PatientDAOImpl;
-import entities.Patient;
-import services.PatientService;
+import dao.ComplaintDAO;
+import dao.impl.ComplaintDAOImpl;
+import entities.cards.Complaint;
 import java.io.Serializable;
 import java.sql.SQLException;
+import services.ComplaintService;
 
-public class PatientServiceImpl extends AbstractServiceImpl implements PatientService {
-    private PatientDAO patientDAO = PatientDAOImpl.getInstance();
+public class ComplaintServiceImpl extends AbstractServiceImpl implements ComplaintService {
+    private ComplaintDAO complaintDAO = ComplaintDAOImpl.getInstance();
 
     @Override
-    public Patient save(Patient patient) {
+    public Complaint save(Complaint complaint) {
         try {
             startTransaction();
-            patient = patientDAO.save(patient);
+            complaintDAO.save(complaint);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return patient;
+        return complaint;
     }
 
     @Override
-    public Patient get(Serializable id) {
-        Patient patient = new Patient();
+    public Complaint get(Serializable id) {
+        Complaint complaint = new Complaint();
         try {
             startTransaction();
-            patient = patientDAO.get(id);
+            complaint = complaintDAO.get(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return patient;
+        return complaint;
     }
 
     @Override
-    public void update(Patient patient) {
-
+    public void update(Complaint complaint) {
         try {
             startTransaction();
-            patientDAO.update(patient);
+            complaintDAO.update(complaint);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,14 +48,14 @@ public class PatientServiceImpl extends AbstractServiceImpl implements PatientSe
 
     @Override
     public int delete(Serializable id) {
-        int countDeletedRows = 0;
+        int countRows = 0;
         try {
             startTransaction();
-            countDeletedRows = patientDAO.delete(id);
+            countRows = complaintDAO.delete(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return countDeletedRows;
+        return countRows;
     }
 }

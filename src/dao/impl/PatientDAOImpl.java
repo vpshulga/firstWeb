@@ -1,5 +1,6 @@
 package dao.impl;
 
+import dao.DaoUtils;
 import dao.PatientDAO;
 import db.ConnectionManager;
 import entities.Patient;
@@ -9,12 +10,11 @@ import java.io.Serializable;
 import java.sql.*;
 
 public class PatientDAOImpl implements PatientDAO {
-
     private static volatile PatientDAO INSTANCE = null;
-    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint, doctor_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String saveAddressQuery = "INSERT INTO addresses (city, street, house, apartament) VALUES (?, ?, ?, ?)";
 
-    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=? WHERE id=?";
+    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=?, doctor_id=?, status=? WHERE id=?";
     private static final String updateAddressQuery = "UPDATE addresses SET city=?, street=?, house=?, apartament=? WHERE id=?";
 
     private static final String getPatientQuery = "SELECT * FROM patients WHERE id=?";
@@ -55,6 +55,9 @@ public class PatientDAOImpl implements PatientDAO {
         }
     }
 
+    private PatientDAOImpl() {
+    }
+
     public static PatientDAO getInstance() {
         PatientDAO patientDAO = INSTANCE;
         if (patientDAO == null) {
@@ -86,14 +89,16 @@ public class PatientDAOImpl implements PatientDAO {
             psPatientSave.setInt(5, rs.getInt(1));
         }
         psPatientSave.setString(6, patient.getComplaint());
+        psPatientSave.setInt(7, patient.getDoctorId());
+        psPatientSave.setBoolean(8, true);
         psPatientSave.executeUpdate();
         ResultSet rs1 = psPatientSave.getGeneratedKeys();
         if (rs1.next()) {
             patient.setId(rs1.getInt(1));
         }
 
-        close(rs);
-        close(rs1);
+        DaoUtils.close(rs);
+        DaoUtils.close(rs1);
         return patient;
     }
 
@@ -108,6 +113,7 @@ public class PatientDAOImpl implements PatientDAO {
             psAddressGet.executeQuery();
             ResultSet rs1 = psAddressGet.getResultSet();
             if (rs1.next()) {
+                patient.setId(rs.getInt(1));
                 patient.setFirstName(rs.getString(2));
                 patient.setLastName(rs.getString(3));
                 patient.setAge(rs.getInt(4));
@@ -117,22 +123,25 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setHouse(rs1.getInt(4));
                 patient.setApartment(rs1.getInt(5));
                 patient.setComplaint(rs.getString(7));
+                patient.setDoctorId(rs.getInt(8));
             }
-            close(rs1);
+            DaoUtils.close(rs1);
         }
-        close(rs);
+        DaoUtils.close(rs);
 
         return patient;
     }
 
     @Override
     public void update(Patient patient) throws SQLException {
-        psPatientUpdate.setInt(6, patient.getId());
+        psPatientUpdate.setInt(8, patient.getId());
         psPatientUpdate.setString(1, patient.getFirstName());
         psPatientUpdate.setString(2, patient.getLastName());
         psPatientUpdate.setInt(3, patient.getAge());
         psPatientUpdate.setString(4, patient.getSex().toString());
         psPatientUpdate.setString(5, patient.getComplaint());
+        psPatientUpdate.setInt(6, patient.getDoctorId());
+        psPatientUpdate.setBoolean(7, patient.isStatus());
         psPatientUpdate.executeUpdate();
 
         psPatientGet.setInt(1, patient.getId());
@@ -146,7 +155,7 @@ public class PatientDAOImpl implements PatientDAO {
             psAddressUpdate.setInt(4, patient.getApartment());
             psAddressUpdate.executeUpdate();
         }
-        close(rs);
+        DaoUtils.close(rs);
     }
 
     @Override
@@ -156,7 +165,6 @@ public class PatientDAOImpl implements PatientDAO {
         psPatientGet.setInt(1, (int) id);
         ResultSet rs = psPatientGet.executeQuery();
         if (rs.next()) {
-
             psPatientDelete.setInt(1, (int) id);
             patientRows = psPatientDelete.executeUpdate();
             psAddressDelete.setInt(1, rs.getInt(6));
@@ -165,12 +173,5 @@ public class PatientDAOImpl implements PatientDAO {
         return addressRows + patientRows;
     }
 
-    private static void close(ResultSet rs) {
-        try {
-            if (rs != null)
-                rs.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 }
