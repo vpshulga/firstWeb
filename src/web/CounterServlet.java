@@ -8,6 +8,7 @@ import enums.Sex;
 import enums.Specialties;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,16 +30,13 @@ public class CounterServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
         writer.write("посещиний:" + counter.incrementAndGet() + "<br/>");
 
-        PatientServiceImpl psi = new PatientServiceImpl();
         DoctorServiceImpl dsi = new DoctorServiceImpl();
-        Doctor doc = new Doctor("Valera", "Khadorkin", 50,
-                Sex.MALE, Educations.HIGH, 10, Specialties.DENTIST);
-//        dsi.save(doc);
-//        writer.write(dsi.get(3).toString());
+        List<Doctor> lst = dsi.getAll();
 
-        Patient patient = psi.get(68);
+        for (Doctor doctor : lst) {
+            writer.write(doctor.getFirstName() + " " + doctor.getLastName()
+                    + " " +  doctor.getSpetialty() + "<br/>");
+        }
 
-        ComplaintServiceImpl csi = new ComplaintServiceImpl();
-        csi.save(new Complaint(patient, patient.getComplaint()));
     }
 }

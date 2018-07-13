@@ -10,16 +10,20 @@ import enums.Educations;
 import enums.Sex;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
     private static volatile RegistryWorkerDAO INSTANCE = null;
-    private static final String saveRegQuery = "INSERT INTO nurses (first_name, last_name, age, sex, education, experience) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String saveRegQuery = "INSERT INTO registry_workers (first_name, last_name, age, sex, education, experience) VALUES (?, ?, ?, ?, ?, ?)";
 
-    private static final String updateRegQuery = "UPDATE nurses SET first_name=?, last_name=?, age=?, sex=?, education=?, experience=? WHERE id=?";
+    private static final String updateRegQuery = "UPDATE registry_workers SET first_name=?, last_name=?, age=?, sex=?, education=?, experience=? WHERE id=?";
 
-    private static final String getRegQuery = "SELECT * FROM nurses WHERE id=?";
+    private static final String getRegQuery = "SELECT * FROM registry_workers WHERE id=?";
 
-    private static final String deleteRegQuery = "DELETE FROM nurses WHERE id=?";
+    private static final String deleteRegQuery = "DELETE FROM registry_workers WHERE id=?";
+
+    private static final String getAllRegsQuery = "SELECT * FROM registry_workers";
 
     private PreparedStatement psRegSave;
 
@@ -28,6 +32,8 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
     private PreparedStatement psRegGet;
 
     private PreparedStatement psRegDelete;
+
+    private PreparedStatement psRegGetAll;
 
     {
         try {
@@ -39,6 +45,8 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
             psRegGet = connection.prepareStatement(getRegQuery);
 
             psRegDelete = connection.prepareStatement(deleteRegQuery);
+
+            psRegGetAll = connection.prepareStatement(getAllRegsQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,5 +122,25 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
     public int delete(Serializable id) throws SQLException {
         psRegDelete.setInt(1, (int) id);
         return psRegDelete.executeUpdate();
+    }
+
+    @Override
+    public List<RegistryWorker> getAll() throws SQLException {
+        psRegGetAll.executeQuery();
+        ResultSet rs = psRegGetAll.getResultSet();
+        List<RegistryWorker> list = new CopyOnWriteArrayList<>();
+        while (rs.next()){
+            RegistryWorker re = new RegistryWorker();
+            re.setId(rs.getInt(1));
+            re.setFirstName(rs.getString(2));
+            re.setLastName(rs.getString(3));
+            re.setAge(rs.getInt(4));
+            re.setSex(Sex.valueOf(rs.getString(5)));
+            re.setEducation(Educations.valueOf(rs.getString(6)));
+            re.setExperience(rs.getInt(7));
+            list.add(re);
+        }
+        DaoUtils.close(rs);
+        return list;
     }
 }

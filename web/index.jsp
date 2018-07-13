@@ -18,7 +18,7 @@
           </tr>
           <tr>
               <td>Возраст:</td>
-              <td><input type="text" name="age"></td>
+              <td><input type="number" name="age"></td>
           </tr>
           <tr>
               <td>Пол</td>
@@ -40,11 +40,11 @@
           </tr>
           <tr>
               <td>Дом:</td>
-              <td><input type="text" name="house"></td>
+              <td><input type="number" name="house"></td>
           </tr>
           <tr>
               <td>Кваритра:</td>
-              <td><input type="text" name="apartament"></td>
+              <td><input type="number" name="apartament"></td>
           </tr>
           <tr>
               <td>Жалоба:</td>

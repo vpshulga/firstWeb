@@ -5,6 +5,8 @@ import dao.impl.RegistryWorkerDAOImpl;
 import entities.RegistryWorker;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import services.RegistryWorkerService;
 
 public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements RegistryWorkerService {
@@ -57,5 +59,18 @@ public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements Re
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    @Override
+    public List<RegistryWorker> getAll() {
+        List<RegistryWorker> list = new CopyOnWriteArrayList<>();
+        try {
+            startTransaction();
+            list = registryWorkerDAO.getAll();
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

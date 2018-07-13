@@ -9,6 +9,8 @@ import enums.Educations;
 import enums.Sex;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NurseDAOImpl implements NurseDAO {
     private static volatile NurseDAO INSTANCE = null;
@@ -20,6 +22,8 @@ public class NurseDAOImpl implements NurseDAO {
 
     private static final String deleteNurseQuery = "DELETE FROM nurses WHERE id=?";
 
+    private static final String getAllNursesQuery = "SELECT * FROM nurses";
+
     private PreparedStatement psNurseSave;
 
     private PreparedStatement psNurseUpdate;
@@ -27,6 +31,8 @@ public class NurseDAOImpl implements NurseDAO {
     private PreparedStatement psNurseGet;
 
     private PreparedStatement psNurseDelete;
+
+    private PreparedStatement psGetAllNurses;
 
     {
         try {
@@ -38,6 +44,8 @@ public class NurseDAOImpl implements NurseDAO {
             psNurseGet = connection.prepareStatement(getNurseQuery);
 
             psNurseDelete = connection.prepareStatement(deleteNurseQuery);
+
+            psGetAllNurses = connection.prepareStatement(getAllNursesQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,5 +120,25 @@ public class NurseDAOImpl implements NurseDAO {
     public int delete(Serializable id) throws SQLException {
         psNurseDelete.setInt(1, (int) id);
         return psNurseDelete.executeUpdate();
+    }
+
+    @Override
+    public List<Nurse> getAll() throws SQLException {
+        psGetAllNurses.executeQuery();
+        ResultSet rs = psGetAllNurses.getResultSet();
+        List<Nurse> list = new CopyOnWriteArrayList<>();
+        while (rs.next()){
+            Nurse nurse = new Nurse();
+            nurse.setId(rs.getInt(1));
+            nurse.setFirstName(rs.getString(2));
+            nurse.setLastName(rs.getString(3));
+            nurse.setAge(rs.getInt(4));
+            nurse.setSex(Sex.valueOf(rs.getString(5)));
+            nurse.setEducation(Educations.valueOf(rs.getString(6)));
+            nurse.setExperience(rs.getInt(7));
+            list.add(nurse);
+        }
+        DaoUtils.close(rs);
+        return list;
     }
 }

@@ -9,6 +9,8 @@ import enums.Sex;
 import enums.Specialties;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DoctorDAOImpl implements DoctorDAO{
     private static volatile DoctorDAO INSTANCE = null;
@@ -20,6 +22,8 @@ public class DoctorDAOImpl implements DoctorDAO{
 
     private static final String deleteDoctorQuery = "DELETE FROM doctors WHERE id=?";
 
+    private static final String getAllDoctorsQuery = "SELECT * FROM doctors";
+
     private PreparedStatement psDoctorSave;
 
     private PreparedStatement psDoctorUpdate;
@@ -27,6 +31,9 @@ public class DoctorDAOImpl implements DoctorDAO{
     private PreparedStatement psDoctorGet;
 
     private PreparedStatement psDoctorDelete;
+
+    private PreparedStatement psGetAllDoctors;
+
 
     {
         try {
@@ -38,6 +45,8 @@ public class DoctorDAOImpl implements DoctorDAO{
             psDoctorGet = connection.prepareStatement(getDoctorQuery);
 
             psDoctorDelete = connection.prepareStatement(deleteDoctorQuery);
+
+            psGetAllDoctors = connection.prepareStatement(getAllDoctorsQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,5 +125,26 @@ public class DoctorDAOImpl implements DoctorDAO{
     public int delete(Serializable id) throws SQLException {
         psDoctorDelete.setInt(1, (int) id);
         return psDoctorDelete.executeUpdate();
+    }
+
+    @Override
+    public List<Doctor> getAll() throws SQLException {
+        psGetAllDoctors.executeQuery();
+        ResultSet rs = psGetAllDoctors.getResultSet();
+        List<Doctor> list = new CopyOnWriteArrayList<>();
+        while (rs.next()){
+            Doctor doc = new Doctor();
+            doc.setId(rs.getInt(1));
+            doc.setFirstName(rs.getString(2));
+            doc.setLastName(rs.getString(3));
+            doc.setAge(rs.getInt(4));
+            doc.setSex(Sex.valueOf(rs.getString(5)));
+            doc.setEducation(Educations.valueOf(rs.getString(6)));
+            doc.setExperience(rs.getInt(7));
+            doc.setSpetialty(Specialties.valueOf(rs.getString(8)));
+            list.add(doc);
+        }
+        DaoUtils.close(rs);
+        return list;
     }
 }

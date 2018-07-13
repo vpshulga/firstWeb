@@ -5,6 +5,8 @@ import dao.impl.NurseDAOImpl;
 import entities.Nurse;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import services.NurseService;
 
 public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService {
@@ -57,5 +59,18 @@ public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    @Override
+    public List<Nurse> getAll() {
+        List<Nurse> list = new CopyOnWriteArrayList<>();
+        try {
+            startTransaction();
+            list = nurseDAO.getAll();
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }

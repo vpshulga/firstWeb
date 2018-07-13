@@ -1,17 +1,15 @@
 package dao.impl;
 
-import dao.AppointmentDAO;
 import dao.DaoUtils;
-import dao.DiagnosysDao;
+import dao.DiagnosysDAO;
 import db.ConnectionManager;
-import entities.cards.Appointment;
 import entities.cards.Diagnosys;
 import java.io.Serializable;
 import java.sql.*;
 import services.impl.PatientServiceImpl;
 
-public class DiagnosysDAOImpl implements DiagnosysDao {
-    private static volatile DiagnosysDao INSTANCE = null;
+public class DiagnosysDAOImpl implements DiagnosysDAO {
+    private static volatile DiagnosysDAO INSTANCE = null;
     private static final String saveDiaQuery = "INSERT INTO diagnoses (patient_id, text) VALUES (?, ?)";
 
     private static final String updateDiaQuery = "UPDATE diagnoses SET patient_id=?, text=? WHERE id=?";
@@ -46,18 +44,18 @@ public class DiagnosysDAOImpl implements DiagnosysDao {
     private DiagnosysDAOImpl() {
     }
 
-    public static DiagnosysDao getInstance() {
-        DiagnosysDao diagnosysDao = INSTANCE;
-        if (diagnosysDao == null) {
-            synchronized (DiagnosysDao.class) {
-                diagnosysDao = INSTANCE;
-                if (diagnosysDao == null) {
-                    INSTANCE = diagnosysDao = new DiagnosysDAOImpl();
+    public static DiagnosysDAO getInstance() {
+        DiagnosysDAO diagnosysDAO = INSTANCE;
+        if (diagnosysDAO == null) {
+            synchronized (DiagnosysDAOImpl.class) {
+                diagnosysDAO = INSTANCE;
+                if (diagnosysDAO == null) {
+                    INSTANCE = diagnosysDAO = new DiagnosysDAOImpl();
                 }
             }
         }
 
-        return diagnosysDao;
+        return diagnosysDAO;
     }
 
     @Override

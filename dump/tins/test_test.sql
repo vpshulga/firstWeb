@@ -1,1 +1,0 @@
-INSERT INTO test.test (counter) VALUES (6);

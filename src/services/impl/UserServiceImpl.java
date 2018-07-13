@@ -1,45 +1,45 @@
 package services.impl;
 
-import dao.DiagnosysDAO;
-import dao.impl.DiagnosysDAOImpl;
-import entities.cards.Diagnosys;
+import dao.UserDAO;
+import dao.impl.UserDAOImpl;
+import entities.User;
 import java.io.Serializable;
 import java.sql.SQLException;
-import services.DiagnosysService;
+import services.UserService;
 
-public class DiagnosysServiceImpl extends AbstractServiceImpl implements DiagnosysService{
-    private DiagnosysDAO diagnosysDAO = DiagnosysDAOImpl.getInstance();
+public class UserServiceImpl extends AbstractServiceImpl implements UserService {
+    private UserDAO userDAO = UserDAOImpl.getInstance();
 
     @Override
-    public Diagnosys save(Diagnosys diagnosys) {
+    public User save(User user) {
         try {
             startTransaction();
-            diagnosysDAO.save(diagnosys);
+            userDAO.save(user);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return diagnosys;
+        return user;
     }
 
     @Override
-    public Diagnosys get(Serializable id) {
-        Diagnosys diagnosys = new Diagnosys();
+    public User get(Serializable id) {
+        User user = new User();
         try {
             startTransaction();
-            diagnosys = diagnosysDAO.get(id);
+            user = userDAO.get(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return diagnosys;
+        return user;
     }
 
     @Override
-    public void update(Diagnosys diagnosys) {
+    public void update(User user) {
         try {
             startTransaction();
-            diagnosysDAO.update(diagnosys);
+            userDAO.update(user);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class DiagnosysServiceImpl extends AbstractServiceImpl implements Diagnos
         int countRows = 0;
         try {
             startTransaction();
-            countRows = diagnosysDAO.delete(id);
+            countRows = userDAO.delete(id);
             commit();
         } catch (SQLException e) {
             e.printStackTrace();

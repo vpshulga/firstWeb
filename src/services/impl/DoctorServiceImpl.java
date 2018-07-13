@@ -5,9 +5,12 @@ import dao.impl.DoctorDAOImpl;
 import entities.Doctor;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import services.DoctorService;
 
 public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorService{
+
     private DoctorDAO doctorDAO = DoctorDAOImpl.getInstance();
     @Override
     public Doctor save(Doctor doctor) {
@@ -57,5 +60,18 @@ public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorServ
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    @Override
+    public List<Doctor> getAll() {
+        List<Doctor> list = new CopyOnWriteArrayList<>();
+        try {
+            startTransaction();
+            list = doctorDAO.getAll();
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
