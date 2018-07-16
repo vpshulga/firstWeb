@@ -4,10 +4,11 @@ import web.command.Controller;
 import web.command.impl.*;
 
 public enum CommandType {
-    LOGIN("login.jsp", "Login", new LoginController()),
-    LOGOUT("login.jsp", "Logout", new LogoutController()),
+    LOGIN("login/login.jsp", "Login", new LoginController()),
+    LOGOUT("login/login.jsp", "Logout", new LogoutController()),
     CARD("card/main.jsp", "Card", new CardController()),
     REGISTRATION("registration/main.jsp", "Registration", new RegistrationController()),
+    DOCTOR("doctor/main.jsp", "Doctor", new DoctorController()),
     WORKERS("workers/main.jsp", "Workers", new WorkersController());
 
     CommandType(String pagePath, String pageName, Controller controller) {
@@ -38,7 +39,6 @@ public enum CommandType {
                 return type;
             }
         }
-// Если ничего не найдено, то на главную страницу с продуктами
         return WORKERS;
     }
 }

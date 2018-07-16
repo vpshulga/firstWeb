@@ -1,16 +1,20 @@
 package entities;
 
+import enums.Roles;
+
 public class User {
     private int id;
     private String login;
     private String password;
+    private Roles role;
 
     public User() {
     }
 
-    public User(String login, String password) {
+    public User(String login, String password, Roles role) {
         this.login = login;
         this.password = password;
+        this.role = role;
     }
 
     public int getId() {
@@ -35,5 +39,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
     }
 }

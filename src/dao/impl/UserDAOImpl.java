@@ -4,6 +4,7 @@ import dao.DaoUtils;
 import dao.UserDAO;
 import db.ConnectionManager;
 import entities.User;
+import enums.Roles;
 import java.io.Serializable;
 import java.sql.*;
 
@@ -17,6 +18,9 @@ public class UserDAOImpl implements UserDAO{
 
     private static final String deleteUserQuery = "DELETE FROM users WHERE id=?";
 
+    private static final String getByLoginQuery = "SELECT * FROM users WHERE LOGIN=?";
+
+
     private PreparedStatement psUserSave;
 
     private PreparedStatement psUserUpdate;
@@ -24,6 +28,8 @@ public class UserDAOImpl implements UserDAO{
     private PreparedStatement psUserGet;
 
     private PreparedStatement psUserDelete;
+
+    private PreparedStatement psGetByLogin;
 
     {
         try {
@@ -35,6 +41,8 @@ public class UserDAOImpl implements UserDAO{
             psUserGet = connection.prepareStatement(getUserQuery);
 
             psUserDelete = connection.prepareStatement(deleteUserQuery);
+
+            psGetByLogin = connection.prepareStatement(getByLoginQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,5 +107,19 @@ public class UserDAOImpl implements UserDAO{
     public int delete(Serializable id) throws SQLException {
         psUserDelete.setInt(1, (int) id);
         return psUserDelete.executeUpdate();
+    }
+
+    @Override
+    public User getByLogin(String login) throws SQLException {
+        User user = new User();
+        psGetByLogin.setString(1, login);
+        ResultSet rs = psGetByLogin.executeQuery();
+        if (rs.next()){
+            user.setId(rs.getInt(1));
+            user.setLogin(rs.getString(2));
+            user.setPassword(rs.getString(3));
+            user.setRole(Roles.valueOf(rs.getString(4)));
+        }
+        return user;
     }
 }

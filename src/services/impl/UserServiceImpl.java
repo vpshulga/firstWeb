@@ -58,4 +58,17 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
         }
         return countRows;
     }
+
+    @Override
+    public User getByLogin(String login) {
+        User user = new User();
+        try {
+            startTransaction();
+            user = userDAO.getByLogin(login);
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }

@@ -8,6 +8,8 @@ import entities.Patient;
 import enums.Sex;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PatientDAOImpl implements PatientDAO {
     private static volatile PatientDAO INSTANCE = null;
@@ -24,6 +26,9 @@ public class PatientDAOImpl implements PatientDAO {
     private static final String deletePatientQuery = "DELETE FROM patients WHERE id=?";
     private static final String deleteAddressQuery = "DELETE FROM addresses WHERE id=?";
 
+    private static final String getAllPatientsByDoctorIdQuery = "SELECT *FROM patients WHERE doctor_id=?";
+    private static final String getAllAddrByDoctorIdQuery = "SELECT * FROM addresses WHERE id=?";
+
     private PreparedStatement psAddressSave;
     private PreparedStatement psPatientSave;
 
@@ -35,6 +40,9 @@ public class PatientDAOImpl implements PatientDAO {
 
     private PreparedStatement psAddressDelete;
     private PreparedStatement psPatientDelete;
+
+    private PreparedStatement psGetAllPatientsByDoctorId;
+    private PreparedStatement psGetAllAddrByDoctorId;
 
     {
         try {
@@ -50,6 +58,9 @@ public class PatientDAOImpl implements PatientDAO {
 
             psPatientDelete = connection.prepareStatement(deletePatientQuery);
             psAddressDelete = connection.prepareStatement(deleteAddressQuery);
+
+            psGetAllPatientsByDoctorId = connection.prepareStatement(getAllPatientsByDoctorIdQuery);
+            psGetAllAddrByDoctorId = connection.prepareStatement(getAllAddrByDoctorIdQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,6 +135,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setApartment(rs1.getInt(5));
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
+                patient.setStatus(rs.getBoolean(9));
             }
             DaoUtils.close(rs1);
         }
@@ -174,4 +186,36 @@ public class PatientDAOImpl implements PatientDAO {
     }
 
 
+    @Override
+    public List<Patient> getAllById(Serializable doctorId) throws SQLException {
+        List<Patient> patients = new CopyOnWriteArrayList<>();
+        psGetAllPatientsByDoctorId.setInt(1, (Integer) doctorId);
+        psGetAllPatientsByDoctorId.executeQuery();
+        ResultSet rs = psGetAllPatientsByDoctorId.getResultSet();
+        while (rs.next()) {
+            Patient patient = new Patient();
+            psGetAllAddrByDoctorId.setInt(1, rs.getInt(6));
+            psGetAllAddrByDoctorId.executeQuery();
+            ResultSet rs1 = psGetAllAddrByDoctorId.getResultSet();
+            if (rs1.next()){
+                patient.setId(rs.getInt(1));
+                patient.setFirstName(rs.getString(2));
+                patient.setLastName(rs.getString(3));
+                patient.setAge(rs.getInt(4));
+                patient.setSex(Sex.valueOf(rs.getString(5)));
+                patient.setCity(rs1.getString(2));
+                patient.setStreet(rs1.getString(3));
+                patient.setHouse(rs1.getInt(4));
+                patient.setApartment(rs1.getInt(5));
+                patient.setComplaint(rs.getString(7));
+                patient.setDoctorId(rs.getInt(8));
+                patient.setStatus(rs.getBoolean(9));
+            }
+            DaoUtils.close(rs1);
+            patients.add(patient);
+        }
+        DaoUtils.close(rs);
+
+        return patients;
+    }
 }

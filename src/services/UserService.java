@@ -11,4 +11,6 @@ public interface UserService {
     void update(User doctor);
 
     int delete(Serializable id);
+
+    User getByLogin(String login);
 }

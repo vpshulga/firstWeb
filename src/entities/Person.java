@@ -12,9 +12,9 @@ public abstract class Person {
     public Person() {
     }
 
-    public Person(String firstName, String secondName, int age, Sex sex) {
+    public Person(String firstName, String lastName, int age, Sex sex) {
         this.firstName = firstName;
-        this.lastName = secondName;
+        this.lastName = lastName;
         this.age = age;
         this.sex = sex;
     }
