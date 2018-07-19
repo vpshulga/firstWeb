@@ -6,6 +6,8 @@ import entities.Patient;
 import services.PatientService;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PatientServiceImpl extends AbstractServiceImpl implements PatientService {
     private PatientDAO patientDAO = PatientDAOImpl.getInstance();
@@ -58,5 +60,18 @@ public class PatientServiceImpl extends AbstractServiceImpl implements PatientSe
             e.printStackTrace();
         }
         return countDeletedRows;
+    }
+
+    @Override
+    public List<Patient> getAllByDoctorId(Serializable doctorId) {
+        List<Patient> patients = new CopyOnWriteArrayList<>();
+        try {
+            startTransaction();
+            patients = patientDAO.getAllByDoctorId(doctorId);
+            commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return patients;
     }
 }

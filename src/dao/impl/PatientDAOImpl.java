@@ -187,7 +187,7 @@ public class PatientDAOImpl implements PatientDAO {
 
 
     @Override
-    public List<Patient> getAllById(Serializable doctorId) throws SQLException {
+    public List<Patient> getAllByDoctorId(Serializable doctorId) throws SQLException {
         List<Patient> patients = new CopyOnWriteArrayList<>();
         psGetAllPatientsByDoctorId.setInt(1, (Integer) doctorId);
         psGetAllPatientsByDoctorId.executeQuery();

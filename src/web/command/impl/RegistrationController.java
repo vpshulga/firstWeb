@@ -17,7 +17,6 @@ import web.command.Controller;
 public class RegistrationController implements Controller {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        User user = (User) req.getSession().getAttribute("user");
         if (req.getParameter("firstName") != null && req.getParameter("lastName") != null){
             PatientServiceImpl psi = new PatientServiceImpl();
             psi.save(new Patient(req.getParameter("firstName"), req.getParameter("lastName"),

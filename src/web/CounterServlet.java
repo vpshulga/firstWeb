@@ -28,14 +28,11 @@ public class CounterServlet extends HttpServlet {
         resp.setContentType("text/html; charset=utf-8");
 
         PrintWriter writer = resp.getWriter();
-        writer.write("посещиний:" + counter.incrementAndGet() + "<br/>");
 
-        DoctorServiceImpl dsi = new DoctorServiceImpl();
-        List<Doctor> lst = dsi.getAll();
-
-        for (Doctor doctor : lst) {
-            writer.write(doctor.getFirstName() + " " + doctor.getLastName()
-                    + " " +  doctor.getSpetialty() + "<br/>");
+        PatientServiceImpl psi = new PatientServiceImpl();
+        List<Patient> list = psi.getAllByDoctorId(3);
+        for (Patient patient : list) {
+            System.out.println(patient.getId());
         }
 
     }

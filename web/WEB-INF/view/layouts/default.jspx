@@ -30,6 +30,7 @@
     <title>${title}</title>
 </head>
 <body>
+<jsp:directive.include file="../common/header.jspx"/>
 <div class="jumbotron">
     <div class="container text-center">
         <c:url var="bodyUrl" value="../workers/main.jsp"></c:url>

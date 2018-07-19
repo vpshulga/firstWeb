@@ -32,7 +32,7 @@ public class LoginController implements Controller {
         } else if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.DOCTOR)) {
             req.getSession().setAttribute("user", user);
             String contextPath = req.getContextPath();
-            resp.sendRedirect(contextPath + "/frontController?command=procedures");
+            resp.sendRedirect(contextPath + "/frontController?command=doctor");
             return;
         } else if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.PATIENT)) {
             req.getSession().setAttribute("user", user);
