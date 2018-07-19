@@ -8,14 +8,16 @@ import java.sql.SQLException;
 import services.ComplaintService;
 
 public class ComplaintServiceImpl extends AbstractServiceImpl implements ComplaintService {
+    private static volatile ComplaintService INSTANCE = null;
     private ComplaintDAO complaintDAO = ComplaintDAOImpl.getInstance();
+    private ComplaintServiceImpl(){
+
+    }
 
     @Override
     public Complaint save(Complaint complaint) {
         try {
-            startTransaction();
             complaintDAO.save(complaint);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,9 +28,7 @@ public class ComplaintServiceImpl extends AbstractServiceImpl implements Complai
     public Complaint get(Serializable id) {
         Complaint complaint = new Complaint();
         try {
-            startTransaction();
             complaint = complaintDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,9 +38,7 @@ public class ComplaintServiceImpl extends AbstractServiceImpl implements Complai
     @Override
     public void update(Complaint complaint) {
         try {
-            startTransaction();
             complaintDAO.update(complaint);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,12 +48,24 @@ public class ComplaintServiceImpl extends AbstractServiceImpl implements Complai
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = complaintDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    public static ComplaintService getInstance(){
+        ComplaintService complaintService = INSTANCE;
+        if (complaintService == null){
+            synchronized (ComplaintServiceImpl.class) {
+                complaintService = INSTANCE;
+                if (complaintService == null) {
+                    INSTANCE = complaintService = new ComplaintServiceImpl();
+                }
+            }
+        }
+
+        return complaintService;
     }
 }

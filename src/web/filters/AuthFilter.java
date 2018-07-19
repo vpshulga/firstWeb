@@ -21,7 +21,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         CommandType type = RequestHandler.getCommand(req);
-        if (type.equals(CommandType.REGISTRATION)) {
+        if (type.equals(CommandType.REGISTRATION) || type.equals(CommandType.DOCTOR) || type.equals(CommandType.CARD)) {
             String contextPath = req.getContextPath();
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {

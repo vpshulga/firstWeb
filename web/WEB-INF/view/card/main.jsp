@@ -10,18 +10,22 @@
                     <th>Имя</th>
                     <th>Фамилия</th>
                     <th>Жалоба</th>
+                    <th>Назначения</th>
+                    <th>Диагноз</th>
                 </tr>
-                <c:forEach var="patient" items="${patients}" varStatus="status">
-                    <tr>
-                        <td>${patient.id}</td>
-                        <td>${patient.firstName}</td>
-                        <td>${patient.lastName}</td>
-                        <div class="form-group">
-                            <td><textarea class="form-control" cols="15" readonly>${patient.complaint}</textarea></td>
-                        </div>
-                    </tr>
-                </c:forEach>
 
+                <tr>
+                    <td>${requestScope.patient.id}</td>
+                    <td>${requestScope.patient.firstName}</td>
+                    <td>${requestScope.patient.lastName}</td>
+                    <td>${requestScope.patient.complaint}</td>
+                    <td>
+                        <c:forEach var="app" items="${requestScope.appointments}">
+                            ${app.text}<br/>
+                        </c:forEach>
+                    </td>
+                    <td>${requestScope.diagnosys.text}</td>
+                </tr>
 
             </table>
         </div>
@@ -46,8 +50,6 @@
             <button type="submit" class="btn btn-default">Submit</button>
         </form>
     </div>
-
-
 
 
     <div class="col-md-4">

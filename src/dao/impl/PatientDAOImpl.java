@@ -13,10 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PatientDAOImpl implements PatientDAO {
     private static volatile PatientDAO INSTANCE = null;
-    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint, doctor_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint, doctor_id, status, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String saveAddressQuery = "INSERT INTO addresses (city, street, house, apartament) VALUES (?, ?, ?, ?)";
 
-    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=?, doctor_id=?, status=? WHERE id=?";
+    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=?, doctor_id=?, status=?, user_id=? WHERE id=?";
     private static final String updateAddressQuery = "UPDATE addresses SET city=?, street=?, house=?, apartament=? WHERE id=?";
 
     private static final String getPatientQuery = "SELECT * FROM patients WHERE id=?";
@@ -26,8 +26,11 @@ public class PatientDAOImpl implements PatientDAO {
     private static final String deletePatientQuery = "DELETE FROM patients WHERE id=?";
     private static final String deleteAddressQuery = "DELETE FROM addresses WHERE id=?";
 
-    private static final String getAllPatientsByDoctorIdQuery = "SELECT *FROM patients WHERE doctor_id=?";
+    private static final String getAllPatientsByDoctorIdQuery = "SELECT * FROM patients WHERE doctor_id=?";
     private static final String getAllAddrByDoctorIdQuery = "SELECT * FROM addresses WHERE id=?";
+
+    private static final String getPatientByUserIdQuery = "SELECT * FROM patients WHERE user_id=?";
+    private static final String getAddressByUserIdQuery = "SELECT * FROM addresses WHERE id=?";
 
     private PreparedStatement psAddressSave;
     private PreparedStatement psPatientSave;
@@ -44,14 +47,17 @@ public class PatientDAOImpl implements PatientDAO {
     private PreparedStatement psGetAllPatientsByDoctorId;
     private PreparedStatement psGetAllAddrByDoctorId;
 
+    private PreparedStatement psAddressGetByUserId;
+    private PreparedStatement psPatientGetByUserId;
+
     {
         try {
             Connection connection = ConnectionManager.getConnection();
             psAddressSave = connection.prepareStatement(saveAddressQuery, Statement.RETURN_GENERATED_KEYS);
-            psPatientSave = ConnectionManager.getConnection().prepareStatement(savePatientQuery, Statement.RETURN_GENERATED_KEYS);
+            psPatientSave = connection.prepareStatement(savePatientQuery, Statement.RETURN_GENERATED_KEYS);
 
             psPatientUpdate = connection.prepareStatement(updatePatientQuery);
-            psAddressUpdate = ConnectionManager.getConnection().prepareStatement(updateAddressQuery, Statement.RETURN_GENERATED_KEYS);
+            psAddressUpdate = connection.prepareStatement(updateAddressQuery, Statement.RETURN_GENERATED_KEYS);
 
             psPatientGet = connection.prepareStatement(getPatientQuery);
             psAddressGet = connection.prepareStatement(getAddressQuery);
@@ -61,6 +67,9 @@ public class PatientDAOImpl implements PatientDAO {
 
             psGetAllPatientsByDoctorId = connection.prepareStatement(getAllPatientsByDoctorIdQuery);
             psGetAllAddrByDoctorId = connection.prepareStatement(getAllAddrByDoctorIdQuery);
+
+            psPatientGetByUserId = connection.prepareStatement(getPatientByUserIdQuery);
+            psAddressGetByUserId = connection.prepareStatement(getAddressByUserIdQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,6 +111,7 @@ public class PatientDAOImpl implements PatientDAO {
         psPatientSave.setString(6, patient.getComplaint());
         psPatientSave.setInt(7, patient.getDoctorId());
         psPatientSave.setBoolean(8, true);
+        psPatientSave.setInt(9, patient.getUserId());
         psPatientSave.executeUpdate();
         ResultSet rs1 = psPatientSave.getGeneratedKeys();
         if (rs1.next()) {
@@ -136,6 +146,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
                 patient.setStatus(rs.getBoolean(9));
+                patient.setUserId(rs.getInt(10));
             }
             DaoUtils.close(rs1);
         }
@@ -146,7 +157,7 @@ public class PatientDAOImpl implements PatientDAO {
 
     @Override
     public void update(Patient patient) throws SQLException {
-        psPatientUpdate.setInt(8, patient.getId());
+        psPatientUpdate.setInt(9, patient.getId());
         psPatientUpdate.setString(1, patient.getFirstName());
         psPatientUpdate.setString(2, patient.getLastName());
         psPatientUpdate.setInt(3, patient.getAge());
@@ -154,10 +165,10 @@ public class PatientDAOImpl implements PatientDAO {
         psPatientUpdate.setString(5, patient.getComplaint());
         psPatientUpdate.setInt(6, patient.getDoctorId());
         psPatientUpdate.setBoolean(7, patient.isStatus());
+        psPatientUpdate.setInt(8, patient.getUserId());
         psPatientUpdate.executeUpdate();
 
         psPatientGet.setInt(1, patient.getId());
-
         ResultSet rs = psPatientGet.executeQuery();
         if (rs.next()) {
             psAddressUpdate.setInt(5, rs.getInt(6));
@@ -210,6 +221,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
                 patient.setStatus(rs.getBoolean(9));
+                patient.setUserId(rs.getInt(10));
             }
             DaoUtils.close(rs1);
             patients.add(patient);
@@ -217,5 +229,37 @@ public class PatientDAOImpl implements PatientDAO {
         DaoUtils.close(rs);
 
         return patients;
+    }
+
+    @Override
+    public Patient getByUserId(Serializable userId) throws SQLException {
+        Patient patient = new Patient();
+        psPatientGetByUserId.setInt(1, (int) userId);
+        psPatientGetByUserId.executeQuery();
+        ResultSet rs = psPatientGetByUserId.getResultSet();
+        if (rs.next()) {
+            psAddressGetByUserId.setInt(1, rs.getInt(6));
+            psAddressGetByUserId.executeQuery();
+            ResultSet rs1 = psAddressGetByUserId.getResultSet();
+            if (rs1.next()) {
+                patient.setId(rs.getInt(1));
+                patient.setFirstName(rs.getString(2));
+                patient.setLastName(rs.getString(3));
+                patient.setAge(rs.getInt(4));
+                patient.setSex(Sex.valueOf(rs.getString(5)));
+                patient.setCity(rs1.getString(2));
+                patient.setStreet(rs1.getString(3));
+                patient.setHouse(rs1.getInt(4));
+                patient.setApartment(rs1.getInt(5));
+                patient.setComplaint(rs.getString(7));
+                patient.setDoctorId(rs.getInt(8));
+                patient.setStatus(rs.getBoolean(9));
+                patient.setUserId(rs.getInt(10));
+            }
+            DaoUtils.close(rs1);
+        }
+        DaoUtils.close(rs);
+
+        return patient;
     }
 }

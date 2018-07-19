@@ -34,7 +34,7 @@ public class UserDAOImpl implements UserDAO{
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psUserSave = ConnectionManager.getConnection().prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
+            psUserSave = connection.prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
 
             psUserUpdate = connection.prepareStatement(updateUserQuery);
 

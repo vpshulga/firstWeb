@@ -5,25 +5,28 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public abstract class AbstractServiceImpl {
-    private Connection connection = ConnectionManager.getConnection();
 
     public void startTransaction() throws SQLException {
-        connection.setAutoCommit(false);
+        getConnection().setAutoCommit(false);
     }
 
     public void commit() {
         try {
-            if (!connection.getAutoCommit()) {
-                connection.commit();
-            }
+            getConnection().commit();
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
             e.printStackTrace();
         }
     }
 
+    public Connection getConnection() {
+        return ConnectionManager.getConnection();
+    }
+
+    public void rollback(){
+        try {
+            getConnection().rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

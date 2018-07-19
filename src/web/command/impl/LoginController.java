@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.UserService;
 import services.impl.UserServiceImpl;
 import web.command.Controller;
 
@@ -21,7 +22,7 @@ public class LoginController implements Controller {
             dispatcher.forward(req, resp);
             return;
         }
-        UserServiceImpl usi = new UserServiceImpl();
+        UserService usi = UserServiceImpl.getInstance();
         User user = usi.getByLogin(login);
 //        if (user != null && user.getPassword().equals(Encoder.encode(password))) {
         if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.REG_WORKER)) {

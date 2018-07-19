@@ -10,14 +10,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import services.NurseService;
 
 public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService {
+    private static volatile NurseService INSTANCE = null;
     private NurseDAO nurseDAO = NurseDAOImpl.getInstance();
+
+    private NurseSrviceImpl(){
+
+    }
 
     @Override
     public Nurse save(Nurse nurse) {
         try {
-            startTransaction();
             nurseDAO.save(nurse);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,9 +31,7 @@ public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService
     public Nurse get(Serializable id) {
         Nurse nurse = new Nurse();
         try {
-            startTransaction();
             nurse = nurseDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,9 +41,7 @@ public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService
     @Override
     public void update(Nurse nurse) {
         try {
-            startTransaction();
             nurseDAO.update(nurse);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,9 +51,7 @@ public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = nurseDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,12 +62,24 @@ public class NurseSrviceImpl extends AbstractServiceImpl implements NurseService
     public List<Nurse> getAll() {
         List<Nurse> list = new CopyOnWriteArrayList<>();
         try {
-            startTransaction();
             list = nurseDAO.getAll();
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static NurseService getInstance(){
+        NurseService nurseService = INSTANCE;
+        if (nurseService == null){
+            synchronized (NurseSrviceImpl.class) {
+                nurseService = INSTANCE;
+                if (nurseService == null) {
+                    INSTANCE = nurseService = new NurseSrviceImpl();
+                }
+            }
+        }
+
+        return nurseService;
     }
 }

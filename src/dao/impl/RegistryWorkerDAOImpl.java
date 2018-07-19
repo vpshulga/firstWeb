@@ -38,7 +38,7 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psRegSave = ConnectionManager.getConnection().prepareStatement(saveRegQuery, Statement.RETURN_GENERATED_KEYS);
+            psRegSave = connection.prepareStatement(saveRegQuery, Statement.RETURN_GENERATED_KEYS);
 
             psRegUpdate = connection.prepareStatement(updateRegQuery);
 

@@ -5,17 +5,23 @@ import dao.impl.AppointmentDAOImpl;
 import entities.cards.Appointment;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import services.AppointmentService;
 
 public class AppointmentServiceImpl extends AbstractServiceImpl implements AppointmentService{
+    private static volatile AppointmentService INSTANCE = null;
+
     private AppointmentDAO appointmentDAO = AppointmentDAOImpl.getInstance();
+
+    private AppointmentServiceImpl(){
+
+    }
 
     @Override
     public Appointment save(Appointment appointment) {
         try {
-            startTransaction();
             appointmentDAO.save(appointment);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,9 +32,7 @@ public class AppointmentServiceImpl extends AbstractServiceImpl implements Appoi
     public Appointment get(Serializable id) {
         Appointment appointment = new Appointment();
         try {
-            startTransaction();
             appointment = appointmentDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,9 +42,7 @@ public class AppointmentServiceImpl extends AbstractServiceImpl implements Appoi
     @Override
     public void update(Appointment appointment) {
         try {
-            startTransaction();
             appointmentDAO.update(appointment);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,8 +56,34 @@ public class AppointmentServiceImpl extends AbstractServiceImpl implements Appoi
             countRows = appointmentDAO.delete(id);
             commit();
         } catch (SQLException e) {
+            rollback();
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    @Override
+    public List<Appointment> getAllByPatientId(Serializable patientId) {
+        List<Appointment> appointments = new CopyOnWriteArrayList<>();
+        try {
+            appointments = appointmentDAO.getAllByPatientId(patientId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return appointments;
+    }
+
+    public static AppointmentService getInstance(){
+        AppointmentService appointmentService = INSTANCE;
+        if (appointmentService == null){
+            synchronized (AppointmentServiceImpl.class) {
+                appointmentService = INSTANCE;
+                if (appointmentService == null) {
+                    INSTANCE = appointmentService = new AppointmentServiceImpl();
+                }
+            }
+        }
+
+        return appointmentService;
     }
 }

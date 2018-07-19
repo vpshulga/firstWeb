@@ -13,9 +13,9 @@ import services.impl.RegistryWorkerServiceImpl;
 import web.command.Controller;
 
 public class WorkersController implements Controller {
-    private DoctorService doctorService = new DoctorServiceImpl();
-    private NurseService nurseService = new NurseSrviceImpl();
-    private RegistryWorkerService registryWorkerService = new RegistryWorkerServiceImpl();
+    private DoctorService doctorService = DoctorServiceImpl.getInstance();
+    private NurseService nurseService = NurseSrviceImpl.getInstance();
+    private RegistryWorkerService registryWorkerService = RegistryWorkerServiceImpl.getInstance();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

@@ -2,20 +2,26 @@ package services.impl;
 
 import dao.DiagnosysDAO;
 import dao.impl.DiagnosysDAOImpl;
+import entities.Nurse;
 import entities.cards.Diagnosys;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import services.DiagnosysService;
 
 public class DiagnosysServiceImpl extends AbstractServiceImpl implements DiagnosysService{
+    private static volatile DiagnosysService INSTANCE = null;
     private DiagnosysDAO diagnosysDAO = DiagnosysDAOImpl.getInstance();
+
+    private DiagnosysServiceImpl(){
+
+    }
 
     @Override
     public Diagnosys save(Diagnosys diagnosys) {
         try {
-            startTransaction();
             diagnosysDAO.save(diagnosys);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,9 +32,7 @@ public class DiagnosysServiceImpl extends AbstractServiceImpl implements Diagnos
     public Diagnosys get(Serializable id) {
         Diagnosys diagnosys = new Diagnosys();
         try {
-            startTransaction();
             diagnosys = diagnosysDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,9 +42,7 @@ public class DiagnosysServiceImpl extends AbstractServiceImpl implements Diagnos
     @Override
     public void update(Diagnosys diagnosys) {
         try {
-            startTransaction();
             diagnosysDAO.update(diagnosys);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,12 +52,46 @@ public class DiagnosysServiceImpl extends AbstractServiceImpl implements Diagnos
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = diagnosysDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return countRows;
+    }
+
+    @Override
+    public List<Diagnosys> getAll() {
+        List<Diagnosys> list = new CopyOnWriteArrayList<>();
+        try {
+            list = diagnosysDAO.getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public Diagnosys getByPatientId(Serializable patientId) {
+        Diagnosys diagnosys = new Diagnosys();
+        try {
+            diagnosys = diagnosysDAO.getByPatientId(patientId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return diagnosys;
+    }
+
+    public static DiagnosysService getInstance(){
+        DiagnosysService diagnosysService = INSTANCE;
+        if (diagnosysService == null){
+            synchronized (DiagnosysServiceImpl.class) {
+                diagnosysService = INSTANCE;
+                if (diagnosysService == null) {
+                    INSTANCE = diagnosysService = new DiagnosysServiceImpl();
+                }
+            }
+        }
+
+        return diagnosysService;
     }
 }

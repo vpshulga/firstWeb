@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.PatientService;
 import services.impl.PatientServiceImpl;
 
 @WebServlet("/db")
@@ -26,7 +27,7 @@ public class DbServlet extends HttpServlet {
         StringBuilder sb = new StringBuilder();
 
         String query = "SELECT * FROM db_test";
-        PatientServiceImpl psi = new PatientServiceImpl();
+        PatientService psi = PatientServiceImpl.getInstance();
 
         try {
             PreparedStatement ps = connection.prepareStatement(query);

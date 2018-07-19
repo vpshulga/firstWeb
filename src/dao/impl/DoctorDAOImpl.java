@@ -44,7 +44,7 @@ public class DoctorDAOImpl implements DoctorDAO{
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psDoctorSave = ConnectionManager.getConnection().prepareStatement(saveDoctorQuery, Statement.RETURN_GENERATED_KEYS);
+            psDoctorSave = connection.prepareStatement(saveDoctorQuery, Statement.RETURN_GENERATED_KEYS);
 
             psDoctorUpdate = connection.prepareStatement(updateDoctorQuery);
 
@@ -55,6 +55,7 @@ public class DoctorDAOImpl implements DoctorDAO{
             psGetAllDoctors = connection.prepareStatement(getAllDoctorsQuery);
 
             psGetDoctorByUID = connection.prepareStatement(getDoctorByUIDQuery);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -163,9 +164,9 @@ public class DoctorDAOImpl implements DoctorDAO{
     @Override
     public Doctor getDoctorByUID(Serializable userID) throws SQLException {
         Doctor doctor = new Doctor();
-        psDoctorGet.setInt(1, (int) userID);
-        psDoctorGet.executeQuery();
-        ResultSet rs = psDoctorGet.getResultSet();
+        psGetDoctorByUID.setInt(1, (int) userID);
+        psGetDoctorByUID.executeQuery();
+        ResultSet rs = psGetDoctorByUID.getResultSet();
         if (rs.next()){
             doctor.setId(rs.getInt(1));
             doctor.setFirstName(rs.getString(2));

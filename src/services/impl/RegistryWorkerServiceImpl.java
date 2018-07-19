@@ -10,14 +10,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import services.RegistryWorkerService;
 
 public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements RegistryWorkerService {
+    private static volatile RegistryWorkerService INSTANCE = null;
     private RegistryWorkerDAO registryWorkerDAO = RegistryWorkerDAOImpl.getInstance();
+
+    private RegistryWorkerServiceImpl(){
+
+    }
 
     @Override
     public RegistryWorker save(RegistryWorker registryWorker) {
         try {
-            startTransaction();
             registryWorkerDAO.save(registryWorker);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,9 +31,7 @@ public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements Re
     public RegistryWorker get(Serializable id) {
         RegistryWorker registryWorker = new RegistryWorker();
         try {
-            startTransaction();
             registryWorker = registryWorkerDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,9 +41,7 @@ public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements Re
     @Override
     public void update(RegistryWorker registryWorker) {
         try {
-            startTransaction();
             registryWorkerDAO.update(registryWorker);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,9 +51,7 @@ public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements Re
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = registryWorkerDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,12 +62,24 @@ public class RegistryWorkerServiceImpl extends AbstractServiceImpl implements Re
     public List<RegistryWorker> getAll() {
         List<RegistryWorker> list = new CopyOnWriteArrayList<>();
         try {
-            startTransaction();
             list = registryWorkerDAO.getAll();
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public static RegistryWorkerService getInstance(){
+        RegistryWorkerService registryWorkerService = INSTANCE;
+        if (registryWorkerService == null){
+            synchronized (RegistryWorkerServiceImpl.class) {
+                registryWorkerService = INSTANCE;
+                if (registryWorkerService == null) {
+                    INSTANCE = registryWorkerService = new RegistryWorkerServiceImpl();
+                }
+            }
+        }
+
+        return registryWorkerService;
     }
 }

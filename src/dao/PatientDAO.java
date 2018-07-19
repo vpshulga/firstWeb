@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PatientDAO extends DAO<Patient> {
     List<Patient> getAllByDoctorId(Serializable doctorId) throws SQLException;
+    Patient getByUserId(Serializable userId) throws SQLException;
 }

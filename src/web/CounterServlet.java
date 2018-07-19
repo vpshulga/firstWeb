@@ -2,6 +2,7 @@ package web;
 
 import entities.Doctor;
 import entities.Patient;
+import entities.cards.Appointment;
 import entities.cards.Complaint;
 import enums.Educations;
 import enums.Sex;
@@ -15,6 +16,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.AppointmentService;
+import services.PatientService;
+import services.impl.AppointmentServiceImpl;
 import services.impl.ComplaintServiceImpl;
 import services.impl.DoctorServiceImpl;
 import services.impl.PatientServiceImpl;
@@ -22,18 +26,15 @@ import services.impl.PatientServiceImpl;
 @WebServlet("/counter")
 public class CounterServlet extends HttpServlet {
     private static AtomicInteger counter = new AtomicInteger(0);
-
+    PatientService psi = PatientServiceImpl.getInstance();
+    AppointmentService asi = AppointmentServiceImpl.getInstance();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=utf-8");
 
         PrintWriter writer = resp.getWriter();
 
-        PatientServiceImpl psi = new PatientServiceImpl();
-        List<Patient> list = psi.getAllByDoctorId(3);
-        for (Patient patient : list) {
-            System.out.println(patient.getId());
-        }
+       asi.save(new Appointment(psi.get(91), "алвав"));
 
     }
 }

@@ -9,8 +9,9 @@ public class Nurse extends MedWorker {
     public Nurse() {
     }
 
-    public Nurse(String firstName, String secondName, int age, Sex sex, Educations education, int experience, int id) {
-        super(firstName, secondName, age, sex, education, experience);
+    public Nurse(String firstName, String secondName, int age, Sex sex, Educations education,
+                 int experience, int id, int userId) {
+        super(firstName, secondName, age, sex, education, experience, userId);
         this.id = id;
     }
 

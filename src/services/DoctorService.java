@@ -14,4 +14,6 @@ public interface DoctorService {
     int delete(Serializable id);
 
     List<Doctor> getAll();
+
+    Doctor getDoctorByUID(Serializable userId);
 }

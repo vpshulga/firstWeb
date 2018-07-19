@@ -2,6 +2,7 @@ package services;
 
 import entities.cards.Appointment;
 import java.io.Serializable;
+import java.util.List;
 
 public interface AppointmentService {
     Appointment save(Appointment appointment);
@@ -11,4 +12,6 @@ public interface AppointmentService {
     void update(Appointment appointment);
 
     int delete(Serializable id);
+
+    List<Appointment> getAllByPatientId(Serializable patientId);
 }

@@ -10,14 +10,17 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import services.DoctorService;
 
 public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorService{
-
+    private static volatile DoctorService INSTANCE = null;
     private DoctorDAO doctorDAO = DoctorDAOImpl.getInstance();
+
+    private DoctorServiceImpl(){
+
+    }
+
     @Override
     public Doctor save(Doctor doctor) {
         try {
-            startTransaction();
             doctorDAO.save(doctor);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,9 +31,7 @@ public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorServ
     public Doctor get(Serializable id) {
         Doctor doc = new Doctor();
         try {
-            startTransaction();
             doc = doctorDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -40,9 +41,7 @@ public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorServ
     @Override
     public void update(Doctor doctor) {
         try {
-            startTransaction();
             doctorDAO.update(doctor);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,9 +52,7 @@ public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorServ
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = doctorDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,12 +63,35 @@ public class DoctorServiceImpl extends AbstractServiceImpl implements DoctorServ
     public List<Doctor> getAll() {
         List<Doctor> list = new CopyOnWriteArrayList<>();
         try {
-            startTransaction();
             list = doctorDAO.getAll();
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    @Override
+    public Doctor getDoctorByUID(Serializable userId) {
+        Doctor doc = new Doctor();
+        try {
+            doc = doctorDAO.getDoctorByUID(userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
+    public static DoctorService getInstance(){
+        DoctorService doctorService = INSTANCE;
+        if (doctorService == null){
+            synchronized (DoctorServiceImpl.class) {
+                doctorService = INSTANCE;
+                if (doctorService == null) {
+                    INSTANCE = doctorService = new DoctorServiceImpl();
+                }
+            }
+        }
+
+        return doctorService;
     }
 }

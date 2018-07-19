@@ -6,6 +6,9 @@ import db.ConnectionManager;
 import entities.cards.Diagnosys;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import services.PatientService;
 import services.impl.PatientServiceImpl;
 
 public class DiagnosysDAOImpl implements DiagnosysDAO {
@@ -18,6 +21,10 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
 
     private static final String deleteDiaQuery = "DELETE FROM diagnoses WHERE id=?";
 
+    private static final String getAllDiaQuery = "SELECT * FROM diagnoses";
+
+    private static final String getByPatientIdQuery = "SELECT * FROM diagnoses WHERE patient_id=?";
+
     private PreparedStatement psDiaSave;
 
     private PreparedStatement psDiaUpdate;
@@ -26,16 +33,27 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
 
     private PreparedStatement psDiaDelete;
 
+    private PreparedStatement psGetAllDia;
+
+    private PreparedStatement psGetByPatientId;
+
+    private PatientService psi = PatientServiceImpl.getInstance();
+
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psDiaSave = ConnectionManager.getConnection().prepareStatement(saveDiaQuery, Statement.RETURN_GENERATED_KEYS);
+            psDiaSave = connection.prepareStatement(saveDiaQuery, Statement.RETURN_GENERATED_KEYS);
 
             psDiaUpdate = connection.prepareStatement(updateDiaQuery);
 
             psDiaGet = connection.prepareStatement(getDiaQuery);
 
             psDiaDelete = connection.prepareStatement(deleteDiaQuery);
+
+            psGetAllDia = connection.prepareStatement(getAllDiaQuery);
+
+            psGetByPatientId = connection.prepareStatement(getByPatientIdQuery);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,7 +97,7 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
         ResultSet rs = psDiaGet.getResultSet();
         if (rs.next()){
             diagnosys.setId(rs.getInt(1));
-            PatientServiceImpl psi = new PatientServiceImpl();
+
             diagnosys.setPatient(psi.get(rs.getInt(2)));
             diagnosys.setText(rs.getString(3));
         }
@@ -101,4 +119,34 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
         return psDiaDelete.executeUpdate();
     }
 
+    @Override
+    public List<Diagnosys> getAll() throws SQLException {
+        psGetAllDia.executeQuery();
+        ResultSet rs = psGetAllDia.getResultSet();
+        List<Diagnosys> list = new CopyOnWriteArrayList<>();
+        while (rs.next()){
+            Diagnosys diagnosys = new Diagnosys();
+            diagnosys.setId(rs.getInt(1));
+            diagnosys.setPatient(psi.get(rs.getInt(2)));
+            diagnosys.setText(rs.getString(3));
+            list.add(diagnosys);
+        }
+        DaoUtils.close(rs);
+        return list;
+    }
+
+    @Override
+    public Diagnosys getByPatientId(Serializable patientId) throws SQLException {
+        Diagnosys diagnosys = new Diagnosys();
+        psGetByPatientId.setInt(1, (int) patientId);
+        psGetByPatientId.executeQuery();
+        ResultSet rs = psGetByPatientId.getResultSet();
+        if (rs.next()){
+            diagnosys.setId(rs.getInt(1));
+            diagnosys.setPatient(psi.get(rs.getInt(2)));
+            diagnosys.setText(rs.getString(3));
+        }
+        DaoUtils.close(rs);
+        return diagnosys;
+    }
 }

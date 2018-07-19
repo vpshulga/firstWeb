@@ -11,8 +11,8 @@ public abstract class MedWorker extends Person {
     }
 
     public MedWorker(String firstName, String secondName, int age, Sex sex,
-                     Educations education, int experience) {
-        super(firstName, secondName, age, sex);
+                     Educations education, int experience, int userId) {
+        super(firstName, secondName, age, sex, userId);
         this.education = education;
         this.experience = experience;
     }

@@ -6,6 +6,9 @@ import db.ConnectionManager;
 import entities.cards.Appointment;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import services.PatientService;
 import services.impl.PatientServiceImpl;
 
 public class AppointmentDAOImpl implements AppointmentDAO {
@@ -18,6 +21,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 
     private static final String deleteAppQuery = "DELETE FROM appointments WHERE id=?";
 
+    private static final String getAppByPatientIdQuery = "SELECT * FROM appointments WHERE patient_id=?";
+
     private PreparedStatement psAppSave;
 
     private PreparedStatement psAppUpdate;
@@ -26,16 +31,22 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 
     private PreparedStatement psAppDelete;
 
+    private PreparedStatement psAppGetByPatientId;
+
+    private PatientService psi = PatientServiceImpl.getInstance();
+
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psAppSave = ConnectionManager.getConnection().prepareStatement(saveAppQuery, Statement.RETURN_GENERATED_KEYS);
+            psAppSave = connection.prepareStatement(saveAppQuery, Statement.RETURN_GENERATED_KEYS);
 
             psAppUpdate = connection.prepareStatement(updateAppQuery);
 
             psAppGet = connection.prepareStatement(getAppQuery);
 
             psAppDelete = connection.prepareStatement(deleteAppQuery);
+
+            psAppGetByPatientId = connection.prepareStatement(getAppByPatientIdQuery);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -79,7 +90,6 @@ public class AppointmentDAOImpl implements AppointmentDAO {
         ResultSet rs = psAppGet.getResultSet();
         if (rs.next()){
             appointment.setId(rs.getInt(1));
-            PatientServiceImpl psi = new PatientServiceImpl();
             appointment.setPatient(psi.get(rs.getInt(2)));
             appointment.setText(rs.getString(3));
         }
@@ -99,5 +109,22 @@ public class AppointmentDAOImpl implements AppointmentDAO {
     public int delete(Serializable id) throws SQLException {
         psAppDelete.setInt(1, (int) id);
         return psAppDelete.executeUpdate();
+    }
+
+    @Override
+    public List<Appointment> getAllByPatientId(Serializable patientId) throws SQLException {
+        List<Appointment> appointments = new CopyOnWriteArrayList<>();
+        psAppGetByPatientId.setInt(1, (int) patientId);
+        psAppGetByPatientId.executeQuery();
+        ResultSet rs = psAppGetByPatientId.getResultSet();
+        while (rs.next()){
+            Appointment appointment = new Appointment();
+            appointment.setId(rs.getInt(1));
+            appointment.setPatient(psi.get(rs.getInt(2)));
+            appointment.setText(rs.getString(3));
+            appointments.add(appointment);
+        }
+        DaoUtils.close(rs);
+        return appointments;
     }
 }

@@ -37,7 +37,7 @@ public class NurseDAOImpl implements NurseDAO {
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psNurseSave = ConnectionManager.getConnection().prepareStatement(saveNurseQuery, Statement.RETURN_GENERATED_KEYS);
+            psNurseSave = connection.prepareStatement(saveNurseQuery, Statement.RETURN_GENERATED_KEYS);
 
             psNurseUpdate = connection.prepareStatement(updateNurseQuery);
 

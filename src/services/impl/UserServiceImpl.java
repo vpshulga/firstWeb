@@ -8,14 +8,17 @@ import java.sql.SQLException;
 import services.UserService;
 
 public class UserServiceImpl extends AbstractServiceImpl implements UserService {
+    private static volatile UserService INSTANCE = null;
     private UserDAO userDAO = UserDAOImpl.getInstance();
+
+    private UserServiceImpl(){
+
+    }
 
     @Override
     public User save(User user) {
         try {
-            startTransaction();
             userDAO.save(user);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -26,9 +29,7 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
     public User get(Serializable id) {
         User user = new User();
         try {
-            startTransaction();
             user = userDAO.get(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -38,9 +39,7 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
     @Override
     public void update(User user) {
         try {
-            startTransaction();
             userDAO.update(user);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -50,9 +49,7 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
     public int delete(Serializable id) {
         int countRows = 0;
         try {
-            startTransaction();
             countRows = userDAO.delete(id);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,12 +60,24 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
     public User getByLogin(String login) {
         User user = new User();
         try {
-            startTransaction();
             user = userDAO.getByLogin(login);
-            commit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public static UserService getInstance(){
+        UserService userService = INSTANCE;
+        if (userService == null){
+            synchronized (UserServiceImpl.class) {
+                userService = INSTANCE;
+                if (userService == null) {
+                    INSTANCE = userService = new UserServiceImpl();
+                }
+            }
+        }
+
+        return userService;
     }
 }

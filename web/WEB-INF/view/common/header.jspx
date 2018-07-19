@@ -17,8 +17,8 @@
             </div>
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/frontController?command=registration">Регистрация пациента</a></li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+                <li><a href="${pageContext.request.contextPath}/frontController?command=doctor">Страница доктора</a></li>
+                <li><a href="${pageContext.request.contextPath}/frontController?command=card">Страница пациента</a></li>
             </ul>
         </div>
     </nav>

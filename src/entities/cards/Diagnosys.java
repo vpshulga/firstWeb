@@ -38,4 +38,22 @@ public class Diagnosys {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Diagnosys)) return false;
+
+        Diagnosys diagnosys = (Diagnosys) o;
+
+        return id == diagnosys.id && (text != null ? text.equals(diagnosys.text) : diagnosys.text == null);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (patient != null ? patient.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        return result;
+    }
 }

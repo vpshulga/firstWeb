@@ -7,16 +7,14 @@ import enums.Specialties;
 public class Doctor extends MedWorker {
     private int id;
     private Specialties spetialty;
-    private int userId;
 
     public Doctor() {
     }
 
     public Doctor(String firstName, String lastName, int age, Sex sex,
                   Educations education, int experience, Specialties spetialty, int userId) {
-        super(firstName, lastName, age, sex, education, experience);
+        super(firstName, lastName, age, sex, education, experience, userId);
         this.spetialty = spetialty;
-        this.userId = userId;
     }
 
     public int getId() {
@@ -33,14 +31,6 @@ public class Doctor extends MedWorker {
 
     public void setSpetialty(Specialties spetialty) {
         this.spetialty = spetialty;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     @Override

@@ -7,6 +7,7 @@ import db.ConnectionManager;
 import entities.cards.Complaint;
 import java.io.Serializable;
 import java.sql.*;
+import services.PatientService;
 import services.impl.PatientServiceImpl;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
@@ -27,10 +28,12 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
     private PreparedStatement psComDelete;
 
+    private PatientService psi = PatientServiceImpl.getInstance();
+
     {
         try {
             Connection connection = ConnectionManager.getConnection();
-            psComSave = ConnectionManager.getConnection().prepareStatement(saveComQuery, Statement.RETURN_GENERATED_KEYS);
+            psComSave = connection.prepareStatement(saveComQuery, Statement.RETURN_GENERATED_KEYS);
 
             psComUpdate = connection.prepareStatement(updateComQuery);
 
@@ -80,7 +83,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         ResultSet rs = psComGet.getResultSet();
         if (rs.next()){
             complaint.setId(rs.getInt(1));
-            PatientServiceImpl psi = new PatientServiceImpl();
+
             complaint.setPatient(psi.get(rs.getInt(2)));
             complaint.setText(rs.getString(3));
         }
