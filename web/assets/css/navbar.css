@@ -1,0 +1,9 @@
+.navbar-inverse {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #3366ff;
+    height: 150px;
+}
+.navbar-brand {
+    color: black;
+}

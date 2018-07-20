@@ -4,6 +4,7 @@ import dao.AppointmentDAO;
 import dao.DaoUtils;
 import db.ConnectionManager;
 import entities.cards.Appointment;
+import enums.AppointmentsType;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
@@ -13,9 +14,9 @@ import services.impl.PatientServiceImpl;
 
 public class AppointmentDAOImpl implements AppointmentDAO {
     private static volatile AppointmentDAO INSTANCE = null;
-    private static final String saveAppQuery = "INSERT INTO appointments (patient_id, text) VALUES (?, ?)";
+    private static final String saveAppQuery = "INSERT INTO appointments (patient_id, type ,text) VALUES (?, ?, ?)";
 
-    private static final String updateAppQuery = "UPDATE appointments SET patient_id=?, text=? WHERE id=?";
+    private static final String updateAppQuery = "UPDATE appointments SET patient_id=?, type=? , text=? WHERE id=?";
 
     private static final String getAppQuery = "SELECT * FROM appointments WHERE id=?";
 
@@ -72,7 +73,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
     @Override
     public Appointment save(Appointment appointment) throws SQLException {
         psAppSave.setInt(1, appointment.getPatient().getId());
-        psAppSave.setString(2, appointment.getText());
+        psAppSave.setString(2, appointment.getType().toString());
+        psAppSave.setString(3, appointment.getText());
         psAppSave.executeUpdate();
         ResultSet rs = psAppSave.getGeneratedKeys();
         if (rs.next()){
@@ -91,7 +93,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
         if (rs.next()){
             appointment.setId(rs.getInt(1));
             appointment.setPatient(psi.get(rs.getInt(2)));
-            appointment.setText(rs.getString(3));
+            appointment.setType(AppointmentsType.valueOf(rs.getString(3)));
+            appointment.setText(rs.getString(4));
         }
         DaoUtils.close(rs);
         return appointment;
@@ -99,9 +102,10 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 
     @Override
     public void update(Appointment appointment) throws SQLException {
-        psAppUpdate.setInt(3, appointment.getId());
+        psAppUpdate.setInt(4, appointment.getId());
         psAppUpdate.setInt(1, appointment.getPatient().getId());
-        psAppUpdate.setString(2, appointment.getText());
+        psAppUpdate.setString(2, appointment.getType().toString());
+        psAppUpdate.setString(3, appointment.getText());
         psAppUpdate.executeUpdate();
     }
 
@@ -121,7 +125,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
             Appointment appointment = new Appointment();
             appointment.setId(rs.getInt(1));
             appointment.setPatient(psi.get(rs.getInt(2)));
-            appointment.setText(rs.getString(3));
+            appointment.setType(AppointmentsType.valueOf(rs.getString(3)));
+            appointment.setText(rs.getString(4));
             appointments.add(appointment);
         }
         DaoUtils.close(rs);

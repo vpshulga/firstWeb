@@ -34,7 +34,6 @@ public class CounterServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-       asi.save(new Appointment(psi.get(91), "алвав"));
 
     }
 }

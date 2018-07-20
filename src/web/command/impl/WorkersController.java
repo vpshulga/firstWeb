@@ -19,9 +19,9 @@ public class WorkersController implements Controller {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.getSession().setAttribute("doctors", doctorService.getAll());
-        req.getSession().setAttribute("nurses", nurseService.getAll());
-        req.getSession().setAttribute("regWorkers", registryWorkerService.getAll());
+        req.setAttribute("doctors", doctorService.getAll());
+        req.setAttribute("nurses", nurseService.getAll());
+        req.setAttribute("regWorkers", registryWorkerService.getAll());
         req.getRequestDispatcher(MAIN_PAGE).forward(req, resp);
     }
 }

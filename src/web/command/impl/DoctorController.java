@@ -5,6 +5,7 @@ import entities.Patient;
 import entities.User;
 import entities.cards.Appointment;
 import entities.cards.Diagnosys;
+import enums.AppointmentsType;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,8 +34,9 @@ public class DoctorController implements Controller{
         Doctor doc = null;
         List<Diagnosys> diagnoses = diagnosysService.getAll();
         if (req.getParameter("patientId") != null && req.getParameter("appointment") != null){
-            appointmentService.save(new Appointment(patientService.get(Integer.parseInt(req.getParameter("patientId")))
-                    , req.getParameter("appointment")));
+            appointmentService.save(new Appointment(patientService.get(Integer.parseInt(req.getParameter("patientId"))),
+                     AppointmentsType.valueOf(req.getParameter("appointmentType")),
+                     req.getParameter("appointment")));
         }
 
 

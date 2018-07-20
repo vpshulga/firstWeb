@@ -35,6 +35,16 @@ public class CardController implements Controller {
             req.setAttribute("diagnosys", diagnosys);
 
         }
+        if (user != null && user.getRole().equals(Roles.DOCTOR)){
+            if (req.getParameter("id") != null){
+                Patient patient = patientService.get(Integer.parseInt(req.getParameter("id")));
+                List<Appointment> appointments = appointmentService.getAllByPatientId(patient.getId());
+                Diagnosys diagnosys = diagnosysService.getByPatientId(patient.getId());
+                req.setAttribute("patient", patient);
+                req.setAttribute("appointments", appointments);
+                req.setAttribute("diagnosys", diagnosys);
+            }
+        }
         req.getRequestDispatcher(MAIN_PAGE).forward(req, resp);
     }
 }

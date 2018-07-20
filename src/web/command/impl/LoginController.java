@@ -11,7 +11,11 @@ import services.UserService;
 import services.impl.UserServiceImpl;
 import web.command.Controller;
 
+
+
 public class LoginController implements Controller {
+    private UserService userService = UserServiceImpl.getInstance();
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String login = req.getParameter("login");
@@ -22,8 +26,9 @@ public class LoginController implements Controller {
             dispatcher.forward(req, resp);
             return;
         }
-        UserService usi = UserServiceImpl.getInstance();
-        User user = usi.getByLogin(login);
+
+
+        User user = userService.getByLogin(login);
 //        if (user != null && user.getPassword().equals(Encoder.encode(password))) {
         if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.REG_WORKER)) {
             req.getSession().setAttribute("user", user);

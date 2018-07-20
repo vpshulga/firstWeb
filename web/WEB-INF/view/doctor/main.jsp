@@ -2,14 +2,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
 
-    <div class="col-md-4">
+    <div class="col-md-8">
         <div class="table-responsive">
+            <h3>Список пациентов</h3>
             <table class="table">
                 <tr>
                     <th>ID</th>
                     <th>Имя</th>
                     <th>Фамилия</th>
                     <th>Жалоба</th>
+                    <th>Карта пациента</th>
                 </tr>
                 <c:forEach var="patient" items="${patients}" varStatus="status">
                     <tr>
@@ -19,6 +21,10 @@
                         <div class="form-group">
                             <td><textarea class="form-control" cols="15" readonly>${patient.complaint}</textarea></td>
                         </div>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/frontController?command=card&id=${patient.id}" class="btn btn-default btn-block" role="button">Show</a>
+                        </td>
+
                     </tr>
                 </c:forEach>
 
@@ -28,7 +34,7 @@
     </div>
 
 
-    <div class="col-md-4">
+    <div class="col-md-2">
         <form method="POST" action="frontController?command=doctor">
             <div class="form-group">
                 <label for="patId">Выберите пациента</label>
@@ -40,6 +46,14 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="appType">Выберите тип назначения</label>
+                <select class="form-control" name="appointmentType" id="appType">
+                    <option value="PROCEDURES">Процедура</option>
+                    <option value="OPERATIONS">Операция</option>
+                    <option value="DRUGS">Лекарство</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="appointment">Выписать назначение</label>
                 <input type="text" class="form-control" name="appointment" id="appointment">
             </div>
@@ -48,9 +62,7 @@
     </div>
 
 
-
-
-    <div class="col-md-4">
+    <div class="col-md-2">
         <form method="POST" action="frontController?command=doctor">
             <div class="form-group">
                 <label for="patientId">Выберите пациента</label>
