@@ -16,7 +16,7 @@
             font-size: 20px;
 
         }
-        .glyphicon-log-in{
+        .glyphicon{
             font-size: 20px;
         }
     </style>
@@ -48,10 +48,10 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">
-                    <li><span class="text">Hi, ${user.login}!
+                    <li><span class="text">Hi, ${user.login}!Your role is ${user.role}.</span>
                     <li><a href="${pageContext.request.contextPath}/frontController?command=logout">
                         <span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
-                    Your role is ${user.role}.</span></li>
+                    </li>
                 </c:if>
                 <c:if test="${empty user and not (pageName eq 'Login')}">
                     <li><a href="${pageContext.request.contextPath}/frontController?command=login">

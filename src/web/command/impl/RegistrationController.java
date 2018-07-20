@@ -3,6 +3,7 @@ package web.command.impl;
 import entities.Doctor;
 import entities.Patient;
 import entities.User;
+import enums.Roles;
 import enums.Sex;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,12 @@ public class RegistrationController implements Controller {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-
+        User user = (User) req.getSession().getAttribute("user");
+        if (user != null && !user.getRole().equals(Roles.REG_WORKER)) {
+            String contextPath = req.getContextPath();
+            resp.sendRedirect(contextPath + "/frontController?command=check");
+            return;
+        }
 
         if (req.getParameter("firstName") != null && req.getParameter("lastName") != null){
 
@@ -33,8 +39,6 @@ public class RegistrationController implements Controller {
                     Integer.parseInt(req.getParameter("doctorId")), true, 11));
         }
 
-        List<Doctor> doctors = dsi.getAll();
-        req.setAttribute("doctors", doctors);
         RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
         dispatcher.forward(req, resp);
     }

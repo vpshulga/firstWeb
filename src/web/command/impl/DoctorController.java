@@ -69,6 +69,11 @@ public class DoctorController implements Controller{
         if (doc != null){
             patients = patientService.getAllByDoctorId(doc.getId());
         }
+
+        if (req.getParameter("delPatId") != null) {
+            patientService.delete(Integer.parseInt(req.getParameter("delPatId")));
+        }
+
         req.setAttribute("patients", patients);
         RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
         dispatcher.forward(req, resp);

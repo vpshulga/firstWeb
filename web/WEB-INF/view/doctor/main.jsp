@@ -2,9 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="row">
 
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="table-responsive">
-            <h3>Список пациентов</h3>
+            <h4>Список пациентов</h4>
             <table class="table">
                 <tr>
                     <th>ID</th>
@@ -22,7 +22,8 @@
                             <td><textarea class="form-control" cols="15" readonly>${patient.complaint}</textarea></td>
                         </div>
                         <td>
-                            <a href="${pageContext.request.contextPath}/frontController?command=card&id=${patient.id}" class="btn btn-default btn-block" role="button">Show</a>
+                            <a href="${pageContext.request.contextPath}/frontController?command=card&id=${patient.id}"
+                               class="btn btn-default btn-block" role="button">Show</a>
                         </td>
 
                     </tr>
@@ -37,6 +38,7 @@
     <div class="col-md-2">
         <form method="POST" action="frontController?command=doctor">
             <div class="form-group">
+                <h4>Сделать назначение</h4>
                 <label for="patId">Выберите пациента</label>
                 <select class="form-control" name="patientId" id="patId">
                     <c:forEach var="patient" items="${patients}" varStatus="status">
@@ -65,6 +67,7 @@
     <div class="col-md-2">
         <form method="POST" action="frontController?command=doctor">
             <div class="form-group">
+                <h4>Поставить диагноз</h4>
                 <label for="patientId">Выберите пациента</label>
                 <select class="form-control" name="patientId" id="patientId">
                     <c:forEach var="patient" items="${patients}" varStatus="status">
@@ -76,6 +79,22 @@
             <div class="form-group">
                 <label for="diagnosys">Поставить диагноз</label>
                 <input type="text" class="form-control" name="diagnosys" id="diagnosys">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+
+    <div class="col-md-2">
+        <form method="POST" action="frontController?command=doctor">
+            <div class="form-group">
+                <h4>Выписать пациента</h4>
+                <label for="delPat">Выберите пациента</label>
+                <select class="form-control" name="delPatId" id="delPat">
+                    <c:forEach var="patient" items="${patients}" varStatus="status">
+                        <option value="${patient.id}">${patient.id} ${patient.firstName} ${patient.lastName}
+                        </option>
+                    </c:forEach>
+                </select>
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
         </form>

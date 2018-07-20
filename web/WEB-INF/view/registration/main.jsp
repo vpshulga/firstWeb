@@ -48,7 +48,7 @@
             <td>Доктор:</td>
             <td>
                 <select name="doctorId">
-                    <c:forEach var="doctor" items="${doctors}" varStatus="status">
+                    <c:forEach var="doctor" items="${applicationScope.doctors}" varStatus="status">
                         <option value="${doctor.id}">${doctor.firstName} ${doctor.lastName} ${doctor.spetialty}</option>
                     </c:forEach>
                 </select>

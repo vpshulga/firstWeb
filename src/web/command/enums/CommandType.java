@@ -9,6 +9,7 @@ public enum CommandType {
     CARD("card/main.jsp", "Card", new CardController()),
     REGISTRATION("registration/main.jsp", "Registration", new RegistrationController()),
     DOCTOR("doctor/main.jsp", "Doctor", new DoctorController()),
+    CHECK("check/main.jsp", "Check", new CheckController()),
     WORKERS("workers/main.jsp", "Workers", new WorkersController());
 
     CommandType(String pagePath, String pageName, Controller controller) {
