@@ -73,6 +73,20 @@ public class AppointmentServiceImpl extends AbstractServiceImpl implements Appoi
         return appointments;
     }
 
+    @Override
+    public int deleteByPatId(Serializable id) {
+        int countRows = 0;
+        try {
+            startTransaction();
+            countRows = appointmentDAO.deleteByPatId(id);
+            commit();
+        } catch (SQLException e) {
+            rollback();
+            e.printStackTrace();
+        }
+        return countRows;
+    }
+
     public static AppointmentService getInstance(){
         AppointmentService appointmentService = INSTANCE;
         if (appointmentService == null){

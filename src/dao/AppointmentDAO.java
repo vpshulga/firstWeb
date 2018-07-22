@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface AppointmentDAO extends DAO<Appointment> {
     List<Appointment> getAllByPatientId(Serializable patientId) throws SQLException;
+    int deleteByPatId(Serializable id) throws SQLException;
 
 }

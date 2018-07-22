@@ -9,6 +9,10 @@ import enums.Sex;
 import enums.Specialties;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.ServletException;
@@ -33,6 +37,14 @@ public class CounterServlet extends HttpServlet {
         resp.setContentType("text/html; charset=utf-8");
 
         PrintWriter writer = resp.getWriter();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        java.sql.Date date = new java.sql.Date(System.currentTimeMillis());
+
+
+
+        System.out.println(date);
 
 
     }

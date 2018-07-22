@@ -2,6 +2,9 @@ package entities;
 
 import enums.Sex;
 
+import java.sql.Date;
+
+
 public class Patient extends Person {
     private int id;
     private String city;
@@ -10,7 +13,7 @@ public class Patient extends Person {
     private int apartment;
     private String complaint;
     private int doctorId;
-    private boolean status;
+    private String entranceDate;
 
     public Patient() {
 
@@ -18,7 +21,7 @@ public class Patient extends Person {
 
     public Patient(String firstName, String secondName, int age, Sex sex,
                    String cyty, String street, int house, int apartment, String complaint,
-                   int doctorId, boolean status, int userId) {
+                   int doctorId, String entranceDate, int userId) {
         super(firstName, secondName, age, sex, userId);
         this.city = cyty;
         this.street = street;
@@ -26,7 +29,7 @@ public class Patient extends Person {
         this.apartment = apartment;
         this.complaint = complaint;
         this.doctorId = doctorId;
-        this.status = status;
+        this.entranceDate = entranceDate;
     }
 
     public int getId() {
@@ -39,6 +42,14 @@ public class Patient extends Person {
 
     public String getCity() {
         return city;
+    }
+
+    public String getEntranceDate() {
+        return entranceDate;
+    }
+
+    public void setEntranceDate(String entranceDate) {
+        this.entranceDate = entranceDate;
     }
 
     public void setCity(String city) {
@@ -85,13 +96,6 @@ public class Patient extends Person {
         this.doctorId = doctorId;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {

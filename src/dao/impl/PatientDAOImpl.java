@@ -13,10 +13,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PatientDAOImpl implements PatientDAO {
     private static volatile PatientDAO INSTANCE = null;
-    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint, doctor_id, status, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String savePatientQuery = "INSERT INTO patients (first_name, last_name, age, sex, address, complaint, doctor_id, entrance_date, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String saveAddressQuery = "INSERT INTO addresses (city, street, house, apartament) VALUES (?, ?, ?, ?)";
 
-    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=?, doctor_id=?, status=?, user_id=? WHERE id=?";
+    private static final String updatePatientQuery = "UPDATE patients SET first_name=?, last_name=?, age=?, sex=?, complaint=?, doctor_id=?, entrance_date=?, user_id=? WHERE id=?";
     private static final String updateAddressQuery = "UPDATE addresses SET city=?, street=?, house=?, apartament=? WHERE id=?";
 
     private static final String getPatientQuery = "SELECT * FROM patients WHERE id=?";
@@ -110,7 +110,7 @@ public class PatientDAOImpl implements PatientDAO {
         }
         psPatientSave.setString(6, patient.getComplaint());
         psPatientSave.setInt(7, patient.getDoctorId());
-        psPatientSave.setBoolean(8, true);
+        psPatientSave.setString(8, patient.getEntranceDate());
         psPatientSave.setInt(9, patient.getUserId());
         psPatientSave.executeUpdate();
         ResultSet rs1 = psPatientSave.getGeneratedKeys();
@@ -145,7 +145,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setApartment(rs1.getInt(5));
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
-                patient.setStatus(rs.getBoolean(9));
+                patient.setEntranceDate(rs.getString(9));
                 patient.setUserId(rs.getInt(10));
             }
             DaoUtils.close(rs1);
@@ -164,7 +164,7 @@ public class PatientDAOImpl implements PatientDAO {
         psPatientUpdate.setString(4, patient.getSex().toString());
         psPatientUpdate.setString(5, patient.getComplaint());
         psPatientUpdate.setInt(6, patient.getDoctorId());
-        psPatientUpdate.setBoolean(7, patient.isStatus());
+        psPatientUpdate.setString(7, patient.getEntranceDate());
         psPatientUpdate.setInt(8, patient.getUserId());
         psPatientUpdate.executeUpdate();
 
@@ -220,7 +220,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setApartment(rs1.getInt(5));
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
-                patient.setStatus(rs.getBoolean(9));
+                patient.setEntranceDate(rs.getString(9));
                 patient.setUserId(rs.getInt(10));
             }
             DaoUtils.close(rs1);
@@ -253,7 +253,7 @@ public class PatientDAOImpl implements PatientDAO {
                 patient.setApartment(rs1.getInt(5));
                 patient.setComplaint(rs.getString(7));
                 patient.setDoctorId(rs.getInt(8));
-                patient.setStatus(rs.getBoolean(9));
+                patient.setEntranceDate(rs.getString(9));
                 patient.setUserId(rs.getInt(10));
             }
             DaoUtils.close(rs1);

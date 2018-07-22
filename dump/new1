@@ -1,0 +1,293 @@
+-- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: hospital
+-- ------------------------------------------------------
+-- Server version	8.0.11
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+ SET NAMES utf8mb4 ;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city` varchar(50) DEFAULT NULL,
+  `street` varchar(50) DEFAULT NULL,
+  `house` int(3) DEFAULT NULL,
+  `apartament` int(3) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=123 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (72,'Minsk','Gintovta',8,9),(75,'Минск','Слободской пр-д',22,6),(80,'Минск','Жукова',8,12),(81,'n','nn',23,12),(85,'asd','asd',1,2),(87,'gg','ww',12,32),(89,'12','123',22,22),(98,'4','5',6,7),(99,'5','6',8,9),(100,'ÐÐ¾Ð±ÑÑÐ¹ÑÐº','ÐÐµÐ½Ð¸Ð½Ð°',8,17),(101,'ÑÑÐ²','Ð²ÑÐ²Ñ',4,4),(102,'dfgdfg','sdfsdf',12,123),(104,'34432','234',32423,423),(105,'21','2332',123123,123),(106,'234','234234',324,234),(108,'343','43',43,34),(109,'32','21',12,12),(110,'323','23232',123,21331),(111,'4','5',6,7),(112,'123123','123',123,123),(114,'4','5',6,7),(115,'4','5',6,7),(116,'4','5',6,7);
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `appointments`
+--
+
+DROP TABLE IF EXISTS `appointments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `appointments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) DEFAULT NULL,
+  `type` enum('PROCEDURES','OPERATIONS','DRUGS') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `text` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `appointments_patients_id_fk` (`patient_id`),
+  CONSTRAINT `appointments_patients_id_fk` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `appointments`
+--
+
+LOCK TABLES `appointments` WRITE;
+/*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
+INSERT INTO `appointments` VALUES (38,68,'PROCEDURES','test3'),(39,68,'PROCEDURES','Ð¿Ð²Ð°Ð¿Ð°Ð²Ð¿Ð²Ð°Ð¿Ð²Ð°Ð¿'),(40,68,'PROCEDURES','Ð°Ð°Ð°Ð¿Ñ'),(41,68,'PROCEDURES','Ð°Ð¿Ð°Ð¿Ð°'),(42,68,'PROCEDURES','ÐÐ°Ð°Ð¿Ñ'),(43,68,'PROCEDURES','Ð°Ð°Ð¿Ð°ÑÐ¿ÑÐ¾'),(44,68,'PROCEDURES','Ð°Ð¿ÑÐ¿Ð¾ÑÐ¾'),(45,68,'PROCEDURES','Ð°Ð°Ð¿Ð¿ÑÑÐ¾Ð¾'),(46,68,'PROCEDURES','Ð°Ð°Ð¿Ð¿ÑÑ'),(47,68,'PROCEDURES','Ð¿ÑÐ¿ÑÐ¿'),(48,68,'PROCEDURES','Ð¿Ð¿ÑÐ¾Ð¾'),(49,95,'DRUGS','вапвапв'),(50,68,'PROCEDURES','ÑÐ²Ð°ÑÐ²Ð°'),(51,68,'DRUGS','Ð²Ð°Ð¿Ð°Ð¿'),(52,68,'PROCEDURES','Ð¿Ð°Ð¿Ð°Ð¿Ð°'),(53,68,'PROCEDURES','Ð°Ð²Ð¿Ð²Ð°Ð¿'),(54,68,'PROCEDURES','Ð°Ð¿Ð°Ð¿ÑÐ°Ð¿'),(55,68,'PROCEDURES','Ð²Ð°Ð¿Ð°Ð²Ð¿'),(56,68,'PROCEDURES','Ð°Ð¿Ð°Ð²Ð¿'),(57,68,'PROCEDURES','Ð°Ð¿Ð²Ð°Ð¿Ð²Ð°'),(58,68,'PROCEDURES','Ð°Ð¿Ð°Ð¿Ð°'),(59,68,'PROCEDURES','Ð²Ð°Ð°Ð²Ð²Ð²ÑÑÐ¹1232'),(60,68,'PROCEDURES','Ð°ÑÐ²Ð°ÑÐ²Ð°ÑÐ²Ð°'),(61,68,'PROCEDURES','КЕН'),(62,68,'PROCEDURES','валваоп'),(63,68,'PROCEDURES','паарпарпара'),(64,68,'PROCEDURES',''),(65,68,'PROCEDURES',''),(66,68,'PROCEDURES','ывавп'),(67,68,'PROCEDURES',''),(68,98,'DRUGS','cocain'),(69,68,'OPERATIONS','cut finger'),(70,68,'PROCEDURES','heating'),(71,68,'PROCEDURES','asda'),(72,68,'PROCEDURES','123'),(73,68,'PROCEDURES','asd'),(74,68,'PROCEDURES','sad'),(75,68,'PROCEDURES','wer'),(76,68,'PROCEDURES','qwe'),(77,68,'PROCEDURES','sdf'),(78,68,'PROCEDURES','123'),(79,68,'PROCEDURES','213');
+/*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `complaints`
+--
+
+DROP TABLE IF EXISTS `complaints`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `complaints` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `complaints_patients_id_fk` (`patient_id`),
+  CONSTRAINT `complaints_patients_id_fk` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `complaints`
+--
+
+LOCK TABLES `complaints` WRITE;
+/*!40000 ALTER TABLE `complaints` DISABLE KEYS */;
+/*!40000 ALTER TABLE `complaints` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `diagnoses`
+--
+
+DROP TABLE IF EXISTS `diagnoses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `diagnoses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `patient_id` int(11) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `diagnoses_patients_id_fk` (`patient_id`),
+  CONSTRAINT `diagnoses_patients_id_fk` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `diagnoses`
+--
+
+LOCK TABLES `diagnoses` WRITE;
+/*!40000 ALTER TABLE `diagnoses` DISABLE KEYS */;
+INSERT INTO `diagnoses` VALUES (13,71,'test'),(14,68,'wew');
+/*!40000 ALTER TABLE `diagnoses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `doctors`
+--
+
+DROP TABLE IF EXISTS `doctors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `doctors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `sex` enum('MALE','FEMALE','UNDEFINED') DEFAULT NULL,
+  `education` enum('HIGH','MIDDLE') DEFAULT NULL,
+  `experience` int(11) DEFAULT NULL,
+  `spetiality` enum('THERAPIST','OPERATOR','NEUROLOGIST','OPHTHALMOLOGIST','DENTIST','OTORHINOLARINGOLOGIST','TRAUMATOLOGIST') DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `doctors_users_id_fk` (`user_id`),
+  CONSTRAINT `doctors_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `doctors`
+--
+
+LOCK TABLES `doctors` WRITE;
+/*!40000 ALTER TABLE `doctors` DISABLE KEYS */;
+INSERT INTO `doctors` VALUES (3,'Valera','Khadorkin',50,'MALE','HIGH',10,'DENTIST',2),(4,'Vladimir','Ivanov',45,'MALE','HIGH',5,'OPERATOR',3),(5,'Tatiana','Sokolova',31,'FEMALE','HIGH',4,'OTORHINOLARINGOLOGIST',4),(6,'Vladislav','Stepnov',47,'MALE','HIGH',10,'THERAPIST',5),(7,'Svetlana','Zelenkova',58,'FEMALE','HIGH',15,'TRAUMATOLOGIST',6),(8,'Maria','Borisova',47,'FEMALE','HIGH',13,'NEUROLOGIST',7),(9,'Victor','Petrov',52,'MALE','HIGH',21,'OPHTHALMOLOGIST',8);
+/*!40000 ALTER TABLE `doctors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `nurses`
+--
+
+DROP TABLE IF EXISTS `nurses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `nurses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `sex` enum('MALE','FEMALE','UNDEFINED') DEFAULT NULL,
+  `education` enum('HIGH','MIDDLE') DEFAULT NULL,
+  `experience` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `nurses`
+--
+
+LOCK TABLES `nurses` WRITE;
+/*!40000 ALTER TABLE `nurses` DISABLE KEYS */;
+INSERT INTO `nurses` VALUES (1,'Larisa','Volnova',51,'FEMALE','MIDDLE',10),(2,'Irina','Ryszova',55,'FEMALE','MIDDLE',13),(3,'Olga','Fedorova',49,'FEMALE','MIDDLE',15),(4,'Svetlana','Ivanova',64,'FEMALE','MIDDLE',18);
+/*!40000 ALTER TABLE `nurses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `patients`
+--
+
+DROP TABLE IF EXISTS `patients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `patients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `age` int(11) NOT NULL,
+  `sex` enum('MALE','FEMALE','UNDEFINED') DEFAULT NULL,
+  `address` int(11) DEFAULT NULL,
+  `complaint` varchar(255) DEFAULT NULL,
+  `doctor_id` int(11) DEFAULT NULL,
+  `entrance_date` datetime DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `patients_addresses_id_fk` (`address`),
+  KEY `patients_doctors_id_fk` (`doctor_id`),
+  KEY `patients_users_id_fk` (`user_id`),
+  CONSTRAINT `patients_addresses_id_fk` FOREIGN KEY (`address`) REFERENCES `addresses` (`id`),
+  CONSTRAINT `patients_doctors_id_fk` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`),
+  CONSTRAINT `patients_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `patients`
+--
+
+LOCK TABLES `patients` WRITE;
+/*!40000 ALTER TABLE `patients` DISABLE KEYS */;
+INSERT INTO `patients` VALUES (68,'Valera','Petrov',22,'MALE',72,'AAAAAAA',3,'2018-07-21 16:27:59',11),(71,'Виктор','Шульга',27,'MALE',75,'Устал',3,'2018-07-21 16:28:43',9),(76,'Валерий','Петров',21,'MALE',80,'фывфывфывфыв',4,NULL,NULL),(77,'asd','sdsa',12,'FEMALE',81,'asdasd',3,NULL,NULL),(81,'asd','dsa',123,'FEMALE',85,'qwe',7,NULL,NULL),(83,'asd','dsa',3,'UNDEFINED',87,'sadaad',9,NULL,NULL),(85,'dfsd','sdf',12,'UNDEFINED',89,'12wsdas',5,NULL,NULL),(94,'1','2',3,'UNDEFINED',98,'8',4,NULL,NULL),(95,'2','3',4,'UNDEFINED',99,'0',6,NULL,NULL),(96,'Ð¡ÑÐ°Ñ','ÐÑÐ»Ð¾Ð²',21,'UNDEFINED',100,'ÐÐ¾Ð»Ð¸Ñ Ð½Ð¾Ð³Ð°',8,NULL,NULL),(97,'ÑÑÐ²','ÑÑÐ²ÑÑÐ²',12,'MALE',101,'ÑÑÐ²ÑÑÐ²',4,NULL,11),(98,'dfgfd','dfgfd',3423,'UNDEFINED',102,'casc',3,NULL,11),(100,'sdfsd','fsd',32,'UNDEFINED',104,'3242234',4,'2018-07-21 00:00:00',11),(101,'srgsf','sdfsd',33,'UNDEFINED',106,'324',3,'2018-07-21 13:12:37',11),(103,'sdfsd','sdf',33,'UNDEFINED',108,'34',3,'2018-07-21 13:50:12',11),(104,'sdfsdf','fdsfsd',12,'UNDEFINED',109,'21',3,'2018-07-21 13:51:42',11),(105,'sasd','sadasd',12,'UNDEFINED',110,'213',3,'2018-07-21 13:55:30',13),(106,'1','12',3,'UNDEFINED',111,'9',3,'2018-07-21 14:03:57',14),(107,'123','123',123,'UNDEFINED',112,'123',3,'2018-07-21 14:15:33',15),(109,'1','3',2,'UNDEFINED',114,'8',3,'2018-07-21 15:35:25',18),(110,'1','2',3,'UNDEFINED',115,'8',3,'2018-07-21 15:45:57',19),(111,'1','2',3,'UNDEFINED',116,'8',3,'2018-07-21 16:06:58',21);
+/*!40000 ALTER TABLE `patients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `registry_workers`
+--
+
+DROP TABLE IF EXISTS `registry_workers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `registry_workers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `sex` enum('MALE','FEMALE','UNDEFINED') DEFAULT NULL,
+  `education` enum('HIGH','MIDDLE') DEFAULT NULL,
+  `experience` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `registry_workers_users_id_fk` (`user_id`),
+  CONSTRAINT `registry_workers_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `registry_workers`
+--
+
+LOCK TABLES `registry_workers` WRITE;
+/*!40000 ALTER TABLE `registry_workers` DISABLE KEYS */;
+INSERT INTO `registry_workers` VALUES (1,'Valentina','Ivanova',50,'FEMALE','MIDDLE',12,1),(2,'Marina','Gubanova',48,'FEMALE','MIDDLE',5,NULL);
+/*!40000 ALTER TABLE `registry_workers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` enum('ADMIN','DOCTOR','NURSE','REG_WORKER','PATIENT') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'reg1','1','REG_WORKER'),(2,'doc1','1','DOCTOR'),(3,'doc2','2','DOCTOR'),(4,'doc3','3','DOCTOR'),(5,'doc4','4','DOCTOR'),(6,'doc5','5','DOCTOR'),(7,'doc6','6','DOCTOR'),(8,'doc7','7','DOCTOR'),(9,'pat1','1','PATIENT'),(11,'pat3','1','PATIENT'),(12,NULL,NULL,NULL),(13,'pat105','FnPeFHCq',NULL),(14,'pat106','$RBRP82l','PATIENT'),(15,'pat107','PdkVXNAs','PATIENT'),(16,'pat108','cTpurVvK','PATIENT'),(17,NULL,NULL,NULL),(18,'pat109','FdQ9AqyR','PATIENT'),(19,'pat110','1kytLHEx','PATIENT'),(20,NULL,NULL,NULL),(21,'pat111','1P6i14Sw','PATIENT'),(23,'admin','1','ADMIN'),(24,NULL,NULL,NULL),(25,NULL,NULL,NULL),(26,'5','6','DOCTOR'),(27,'5','6','REG_WORKER'),(31,NULL,NULL,NULL),(32,NULL,NULL,NULL),(33,NULL,NULL,NULL),(34,NULL,NULL,NULL),(35,'5','5','REG_WORKER'),(36,'1','0','DOCTOR'),(37,NULL,NULL,NULL),(38,NULL,NULL,NULL),(39,NULL,NULL,NULL),(41,NULL,NULL,NULL),(44,'443','1','DOCTOR'),(45,'3322','213','DOCTOR'),(48,NULL,NULL,NULL),(49,NULL,NULL,NULL),(50,NULL,NULL,NULL),(51,NULL,NULL,NULL),(52,NULL,NULL,NULL),(53,NULL,NULL,NULL),(54,NULL,NULL,NULL),(55,NULL,NULL,NULL),(56,NULL,NULL,NULL),(57,NULL,NULL,NULL),(58,NULL,NULL,NULL),(59,NULL,NULL,NULL),(60,NULL,NULL,NULL),(61,NULL,NULL,NULL),(62,NULL,NULL,NULL),(63,NULL,NULL,NULL),(64,NULL,NULL,NULL),(65,NULL,NULL,NULL),(66,NULL,NULL,NULL),(67,NULL,NULL,NULL),(68,NULL,NULL,NULL),(69,NULL,NULL,NULL),(70,NULL,NULL,NULL),(71,NULL,NULL,NULL),(72,NULL,NULL,NULL),(75,NULL,NULL,NULL),(76,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-07-22 20:43:25

@@ -81,6 +81,28 @@ public class DiagnosysServiceImpl extends AbstractServiceImpl implements Diagnos
         return diagnosys;
     }
 
+    @Override
+    public List<String> getAllByText() {
+        List<String> list = new CopyOnWriteArrayList<>();
+        try {
+            list = diagnosysDAO.getAllByText();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public int deleteByPatId(Serializable id) {
+        int countRows = 0;
+        try {
+            countRows = diagnosysDAO.deleteByPatId(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return countRows;
+    }
+
     public static DiagnosysService getInstance(){
         DiagnosysService diagnosysService = INSTANCE;
         if (diagnosysService == null){

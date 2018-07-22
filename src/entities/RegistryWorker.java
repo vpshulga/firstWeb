@@ -9,10 +9,9 @@ public class RegistryWorker extends MedWorker {
     public RegistryWorker() {
     }
 
-    public RegistryWorker(String firstName, String secondName, int age, Sex sex,
-                          Educations education, int experience, int id, int userId) {
-        super(firstName, secondName, age, sex, education, experience, userId);
-        this.id = id;
+    public RegistryWorker(String firstName, String lastName, int age, Sex sex,
+                          Educations education, int experience, int userId) {
+        super(firstName, lastName, age, sex, education, experience, userId);
     }
 
     public int getId() {

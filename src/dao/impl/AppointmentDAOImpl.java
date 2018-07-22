@@ -24,6 +24,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 
     private static final String getAppByPatientIdQuery = "SELECT * FROM appointments WHERE patient_id=?";
 
+    private static final String deleteByPatID = "DELETE FROM appointments WHERE patient_id=?";
+
     private PreparedStatement psAppSave;
 
     private PreparedStatement psAppUpdate;
@@ -33,6 +35,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
     private PreparedStatement psAppDelete;
 
     private PreparedStatement psAppGetByPatientId;
+
+    private PreparedStatement psDeleteByPatId;
 
     private PatientService psi = PatientServiceImpl.getInstance();
 
@@ -48,6 +52,8 @@ public class AppointmentDAOImpl implements AppointmentDAO {
             psAppDelete = connection.prepareStatement(deleteAppQuery);
 
             psAppGetByPatientId = connection.prepareStatement(getAppByPatientIdQuery);
+
+            psDeleteByPatId = connection.prepareStatement(deleteByPatID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -131,5 +137,11 @@ public class AppointmentDAOImpl implements AppointmentDAO {
         }
         DaoUtils.close(rs);
         return appointments;
+    }
+
+    @Override
+    public int deleteByPatId(Serializable id) throws SQLException {
+        psDeleteByPatId.setInt(1, (int) id);
+        return psDeleteByPatId.executeUpdate();
     }
 }

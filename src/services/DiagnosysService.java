@@ -16,4 +16,8 @@ public interface DiagnosysService {
     List<Diagnosys> getAll();
 
     Diagnosys getByPatientId(Serializable patientId);
+
+    List<String> getAllByText();
+
+    int deleteByPatId(Serializable id);
 }

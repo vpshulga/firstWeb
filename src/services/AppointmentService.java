@@ -14,4 +14,6 @@ public interface AppointmentService {
     int delete(Serializable id);
 
     List<Appointment> getAllByPatientId(Serializable patientId);
+
+    int deleteByPatId(Serializable id);
 }

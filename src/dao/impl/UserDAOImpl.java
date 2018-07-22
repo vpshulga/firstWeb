@@ -7,18 +7,22 @@ import entities.User;
 import enums.Roles;
 import java.io.Serializable;
 import java.sql.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UserDAOImpl implements UserDAO{
     private static volatile UserDAO INSTANCE = null;
     private static final String saveUserQuery = "INSERT INTO users (login, password) VALUES (?, ?)";
 
-    private static final String updateUserQuery = "UPDATE users SET login=?, password=? WHERE id=?";
+    private static final String updateUserQuery = "UPDATE users SET login=?, password=?, role=? WHERE id=?";
 
     private static final String getUserQuery = "SELECT * FROM users WHERE id=?";
 
     private static final String deleteUserQuery = "DELETE FROM users WHERE id=?";
 
-    private static final String getByLoginQuery = "SELECT * FROM users WHERE LOGIN=?";
+    private static final String getByLoginQuery = "SELECT * FROM users WHERE login=?";
+
+    private static final String getAllLogins = "SELECT login FROM users";
 
 
     private PreparedStatement psUserSave;
@@ -30,6 +34,9 @@ public class UserDAOImpl implements UserDAO{
     private PreparedStatement psUserDelete;
 
     private PreparedStatement psGetByLogin;
+
+    private PreparedStatement psGetAllLogins;
+
 
     {
         try {
@@ -43,6 +50,8 @@ public class UserDAOImpl implements UserDAO{
             psUserDelete = connection.prepareStatement(deleteUserQuery);
 
             psGetByLogin = connection.prepareStatement(getByLoginQuery);
+
+            psGetAllLogins = connection.prepareStatement(getAllLogins);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,7 +98,8 @@ public class UserDAOImpl implements UserDAO{
         if (rs.next()){
             user.setId(rs.getInt(1));
             user.setLogin(rs.getString(2));
-            user.setPassword(rs.getString(2));
+            user.setPassword(rs.getString(3));
+            user.setRole(Roles.valueOf(rs.getString(4)));
         }
         DaoUtils.close(rs);
         return user;
@@ -97,9 +107,10 @@ public class UserDAOImpl implements UserDAO{
 
     @Override
     public void update(User user) throws SQLException {
-        psUserUpdate.setInt(3, user.getId());
+        psUserUpdate.setInt(4, user.getId());
         psUserUpdate.setString(1, user.getLogin());
         psUserUpdate.setString(2, user.getPassword());
+        psUserUpdate.setString(3, user.getRole().toString());
         psUserUpdate.executeUpdate();
     }
 
@@ -121,5 +132,16 @@ public class UserDAOImpl implements UserDAO{
             user.setRole(Roles.valueOf(rs.getString(4)));
         }
         return user;
+    }
+
+    @Override
+    public List<String> getAllLogins() throws SQLException {
+        List<String> list = new CopyOnWriteArrayList<>();
+        psGetAllLogins.executeQuery();
+        ResultSet rs = psGetAllLogins.getResultSet();
+        while (rs.next()){
+            list.add(rs.getString(1));
+        }
+        return list;
     }
 }

@@ -15,9 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
     private static volatile RegistryWorkerDAO INSTANCE = null;
-    private static final String saveRegQuery = "INSERT INTO registry_workers (first_name, last_name, age, sex, education, experience) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String saveRegQuery = "INSERT INTO registry_workers (first_name, last_name, age, sex, education, experience, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String updateRegQuery = "UPDATE registry_workers SET first_name=?, last_name=?, age=?, sex=?, education=?, experience=? WHERE id=?";
+    private static final String updateRegQuery = "UPDATE registry_workers SET first_name=?, last_name=?, age=?, sex=?, education=?, experience=?, user_id=? WHERE id=?";
 
     private static final String getRegQuery = "SELECT * FROM registry_workers WHERE id=?";
 
@@ -78,6 +78,7 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
         psRegSave.setString(4,registryWorker.getSex().toString());
         psRegSave.setString(5, registryWorker.getEducation().toString());
         psRegSave.setInt(6, registryWorker.getExperience());
+        psRegSave.setInt(7, registryWorker.getUserId());
         psRegSave.executeUpdate();
         ResultSet rs = psRegSave.getGeneratedKeys();
         if (rs.next()){
@@ -101,6 +102,7 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
             registryWorker.setSex(Sex.valueOf(rs.getString(5)));
             registryWorker.setEducation(Educations.valueOf(rs.getString(6)));
             registryWorker.setExperience(rs.getInt(7));
+            registryWorker.setUserId(rs.getInt(8));
         }
         DaoUtils.close(rs);
         return registryWorker;
@@ -108,13 +110,14 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
 
     @Override
     public void update(RegistryWorker registryWorker) throws SQLException {
-        psRegUpdate.setInt(7, registryWorker.getId());
+        psRegUpdate.setInt(8, registryWorker.getId());
         psRegUpdate.setString(1,registryWorker.getFirstName());
         psRegUpdate.setString(2, registryWorker.getLastName());
         psRegUpdate.setInt(3, registryWorker.getAge());
         psRegUpdate.setString(4, registryWorker.getSex().toString());
         psRegUpdate.setString(5, registryWorker.getEducation().toString());
         psRegUpdate.setInt(6, registryWorker.getExperience());
+        psRegUpdate.setInt(7, registryWorker.getUserId());
         psRegUpdate.executeUpdate();
     }
 
@@ -138,6 +141,7 @@ public class RegistryWorkerDAOImpl implements RegistryWorkerDAO {
             re.setSex(Sex.valueOf(rs.getString(5)));
             re.setEducation(Educations.valueOf(rs.getString(6)));
             re.setExperience(rs.getInt(7));
+            re.setUserId(rs.getInt(8));
             list.add(re);
         }
         DaoUtils.close(rs);

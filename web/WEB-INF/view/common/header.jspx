@@ -8,7 +8,6 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-
           version="2.0">
     <style>
         .text{
@@ -19,6 +18,7 @@
         .glyphicon{
             font-size: 20px;
         }
+
     </style>
 
 
@@ -28,23 +28,44 @@
                 <a class="navbar-brand" href="${pageContext.request.contextPath}">Hospital</a>
             </div>
             <ul class="nav navbar-nav">
+                <fmt:setLocale value="${sessionScope.locale}"/>
+                <fmt:setBundle basename="messages" var="i18n"/>
+                <c:url var="path" value="/frontController?command=${sessionScope.pageName}"></c:url>
                 <c:choose>
                     <c:when test="${not empty user and user.role eq 'REG_WORKER'}">
                         <li>
-                            <a href="${pageContext.request.contextPath}/frontController?command=registration">Регистрация пациента</a>
+                            <a href="${pageContext.request.contextPath}/frontController?command=registration"><fmt:message bundle="${i18n}" key="reg.header"/></a>
                         </li>
+                        <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
+                        <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
                     </c:when>
                     <c:when test="${not empty user and user.role eq 'DOCTOR'}">
                         <li>
-                            <a href="${pageContext.request.contextPath}/frontController?command=doctor">Страница доктора</a>
+                            <a href="${pageContext.request.contextPath}/frontController?command=doctor"><fmt:message bundle="${i18n}" key="doc.header"/></a>
                         </li>
+                        <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
+                        <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
                     </c:when>
                     <c:when test="${not empty user and user.role eq 'PATIENT'}">
                         <li>
-                            <a href="${pageContext.request.contextPath}/frontController?command=card">Страница пациента</a>
+                            <a href="${pageContext.request.contextPath}/frontController?command=card"><fmt:message bundle="${i18n}" key="pat.header"/></a>
                         </li>
+                        <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
+                        <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
                     </c:when>
+                    <c:when test="${not empty user and user.role eq 'ADMIN'}">
+                        <li>
+                            <a href="${pageContext.request.contextPath}/frontController?command=admin"><fmt:message bundle="${i18n}" key="admin.header"/></a>
+                        </li>
+                        <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
+                        <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="${path}&amp;locale=ru"><fmt:message key="header.locale.ru" bundle="${i18n}"/></a></li>
+                        <li><a href="${path}&amp;locale=en"><fmt:message key="header.locale.en" bundle="${i18n}"/></a></li>
+                    </c:otherwise>
                 </c:choose>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <c:if test="${not empty user}">

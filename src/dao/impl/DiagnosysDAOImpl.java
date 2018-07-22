@@ -25,6 +25,10 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
 
     private static final String getByPatientIdQuery = "SELECT * FROM diagnoses WHERE patient_id=?";
 
+    private static final String getAllByTextQuery = "SELECT text FROM diagnoses";
+
+    private static final String deleteByPatIdQuery = "DELETE FROM diagnoses WHERE patient_id=?";
+
     private PreparedStatement psDiaSave;
 
     private PreparedStatement psDiaUpdate;
@@ -36,6 +40,10 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
     private PreparedStatement psGetAllDia;
 
     private PreparedStatement psGetByPatientId;
+
+    private PreparedStatement psGetAllByText;
+
+    private PreparedStatement psDiaDeleteByPatId;
 
     private PatientService psi = PatientServiceImpl.getInstance();
 
@@ -53,6 +61,10 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
             psGetAllDia = connection.prepareStatement(getAllDiaQuery);
 
             psGetByPatientId = connection.prepareStatement(getByPatientIdQuery);
+
+            psGetAllByText = connection.prepareStatement(getAllByTextQuery);
+
+            psDiaDeleteByPatId = connection.prepareStatement(deleteByPatIdQuery);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,5 +160,22 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
         }
         DaoUtils.close(rs);
         return diagnosys;
+    }
+
+    @Override
+    public List<String> getAllByText() throws SQLException {
+        List<String> list = new CopyOnWriteArrayList<>();
+        psGetAllByText.executeQuery();
+        ResultSet rs = psGetAllByText.getResultSet();
+        while (rs.next()){
+            list.add(rs.getString(1));
+        }
+        return list;
+    }
+
+    @Override
+    public int deleteByPatId(Serializable id) throws SQLException {
+        psDiaDeleteByPatId.setInt(1, (int) id);
+        return psDiaDeleteByPatId.executeUpdate();
     }
 }

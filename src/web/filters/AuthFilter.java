@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import web.command.enums.CommandType;
 import web.handlers.RequestHandler;
 
-@WebFilter(urlPatterns = {"/frontController"})
+//@WebFilter(urlPatterns = {"/frontController"})
 public class AuthFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -21,7 +21,8 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         CommandType type = RequestHandler.getCommand(req);
-        if (type.equals(CommandType.REGISTRATION) || type.equals(CommandType.DOCTOR) || type.equals(CommandType.CARD)) {
+        if (type.equals(CommandType.REGISTRATION) || type.equals(CommandType.DOCTOR)
+                || type.equals(CommandType.CARD) || type.equals(CommandType.ADMIN)) {
             String contextPath = req.getContextPath();
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {

@@ -5,9 +5,9 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
-@WebFilter(urlPatterns = {"/*", }, initParams = {@WebInitParam(name = "encoding", value = "UTF-8")})
+//@WebFilter(urlPatterns = {"/*", }, initParams = {@WebInitParam(name = "encoding", value = "UTF-8")})
 public class EncodingFilter implements Filter{
-    private String encoding = "utf-8";
+    private String encoding = "UTF-8";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

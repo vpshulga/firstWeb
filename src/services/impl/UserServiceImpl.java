@@ -5,6 +5,9 @@ import dao.impl.UserDAOImpl;
 import entities.User;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import services.UserService;
 
 public class UserServiceImpl extends AbstractServiceImpl implements UserService {
@@ -65,6 +68,17 @@ public class UserServiceImpl extends AbstractServiceImpl implements UserService 
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public List<String> getAllLogins() {
+        List<String> list = new CopyOnWriteArrayList<>();
+        try {
+            list = userDAO.getAllLogins();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public static UserService getInstance(){

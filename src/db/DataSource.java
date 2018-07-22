@@ -38,7 +38,7 @@ public class DataSource {
         comboPooledDataSource.setUser(USER);
         comboPooledDataSource.setPassword(PASSWORD);
 
-        comboPooledDataSource.setMinPoolSize(10);
+        comboPooledDataSource.setMinPoolSize(3);
         comboPooledDataSource.setAcquireIncrement(5);
         comboPooledDataSource.setMaxPoolSize(20);
         comboPooledDataSource.setMaxStatements(180);

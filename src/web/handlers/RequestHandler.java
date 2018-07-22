@@ -15,6 +15,7 @@ public class RequestHandler {
 
 
         CommandType type = CommandType.getByPageName(param);
+        req.setAttribute("title", type.getI18nKey());
         req.setAttribute("title", type.getPageName());
         HttpSession session = req.getSession();
         String pageName = (String)session.getAttribute("pageName");
