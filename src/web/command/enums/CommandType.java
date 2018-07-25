@@ -11,13 +11,15 @@ public enum CommandType {
     DOCTOR("doctor/main.jsp", "Doctor", "doctor.title", new DoctorController()),
     CHECK("check/main.jsp", "Check", "check.title", new CheckController()),
     ADMIN("admin/main.jsp", "Admin", "admin.title", new AdminController()),
-    WORKERS("workers/main.jsp", "Workers", "workers.title",new WorkersController());
+    WORKERS("workers/main.jsp", "Workers", "workers.title",new WorkersController()),
+    CHANGE("login/change.jsp", "Change", "change.title",new ChangeController());
 
     CommandType(String pagePath, String pageName, String i18nKey, Controller controller) {
         this.pagePath = pagePath;
         this.pageName = pageName;
-        this.controller = controller;
         this.i18nKey = i18nKey;
+        this.controller = controller;
+
     }
 
     private String pagePath;

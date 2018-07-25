@@ -6,6 +6,7 @@ import entities.User;
 import entities.cards.Appointment;
 import entities.cards.Diagnosys;
 import enums.AppointmentsType;
+import enums.Roles;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,6 +30,8 @@ public class DoctorController implements Controller{
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         Doctor doc = null;
 
+        if (checkRole(req, resp)) return;
+
         deletePatient(req);
 
         addAppointment(req);
@@ -38,6 +41,16 @@ public class DoctorController implements Controller{
         getPatients(req, doc);
         RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
         dispatcher.forward(req, resp);
+    }
+
+    private boolean checkRole(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        User user = (User) req.getSession().getAttribute("user");
+        if (user != null && !(user.getRole().equals(Roles.DOCTOR))) {
+            String contextPath = req.getContextPath();
+            resp.sendRedirect(contextPath + "/frontController?command=check");
+            return true;
+        }
+        return false;
     }
 
     private void getPatients(HttpServletRequest req, Doctor doc) {

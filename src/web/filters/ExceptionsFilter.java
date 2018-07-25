@@ -35,13 +35,8 @@ public class ExceptionsFilter implements Filter {
             try {
                 req.getRequestDispatcher(MAIN_PAGE).forward(req, resp);
             } catch (ServletException | IOException e1) {
-
                 LOGGER.warn(ExceptionUtils.getStackTrace(e));
             }
-//            e.printStackTrace();
-//            servletRequest.setAttribute("errorMessage", e.getMessage());
-//            servletRequest.getRequestDispatcher(req.getContextPath() + "/frontController?command=stations").forward(servletRequest, servletResponse);
-
         }
     }
 

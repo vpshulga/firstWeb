@@ -46,7 +46,6 @@ public class AdminController implements Controller {
         RequestDispatcher dispatcher = req.getRequestDispatcher(MAIN_PAGE);
         dispatcher.forward(req, resp);
 
-
     }
 
     private void addDoctor(HttpServletRequest req) {
@@ -61,6 +60,8 @@ public class AdminController implements Controller {
             user.setRole(Roles.DOCTOR);
             if (!userService.getAllLogins().contains(user.getLogin())) {
                 userService.update(user);
+                boolean isCreatedDoc = true;
+                req.setAttribute("isCreatedDoc", isCreatedDoc);
             } else {
                 doctorService.delete(doctor.getId());
                 userService.delete(user.getId());
@@ -82,6 +83,8 @@ public class AdminController implements Controller {
             user.setRole(Roles.REG_WORKER);
             if (!userService.getAllLogins().contains(user.getLogin())) {
                 userService.update(user);
+                boolean isCreatedReg = true;
+                req.setAttribute("isCreatedReg", isCreatedReg);
             } else {
                 registryWorkerService.delete(registryWorker.getId());
                 userService.delete(user.getId());

@@ -10,10 +10,17 @@
         </c:if>
     </div>
 
-    <form action="frontController?command=login" method="post">
-        <b><fmt:message bundle="${i18n}" key="login.login"/></b><input type="text" name="login" maxlength="30"/>
-        <b><fmt:message bundle="${i18n}" key="login.password"/></b><input type="password" name="password"
-                                                                          maxlength="20"/><br/>
-        <input type="submit" value="<fmt:message bundle="${i18n}" key="login.submit"/>">
+
+    <form class="form-inline" action="frontController?command=login" method="post">
+        <div class="form-group">
+            <label for="login"><fmt:message bundle="${i18n}" key="login.login"/>:</label>
+            <input type="text" class="form-control" name="login" id="login">
+        </div>
+        <div class="form-group">
+            <label for="password"><fmt:message bundle="${i18n}" key="login.password"/>:</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-default"><fmt:message bundle="${i18n}" key="login.submit"/></button>
+
     </form>
 </div>
