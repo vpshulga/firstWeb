@@ -29,6 +29,7 @@ public class AdminController implements Controller {
     private DoctorService doctorService = DoctorServiceImpl.getInstance();
     private UserService userService = UserServiceImpl.getInstance();
     private RegistryWorkerService registryWorkerService = RegistryWorkerServiceImpl.getInstance();
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         if (checkRole(req, resp)) return;

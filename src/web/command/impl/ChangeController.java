@@ -21,9 +21,9 @@ public class ChangeController implements Controller {
         String confirm = req.getParameter("confirm");
 
 
-        if (user != null){
-            if (oldPass != null && oldPass.equals(user.getPassword()) ){
-                if (newPass != null && newPass.equals(confirm)){
+        if (user != null) {
+            if (oldPass != null && oldPass.equals(user.getPassword())) {
+                if (newPass != null && newPass.equals(confirm)) {
                     user.setPassword(newPass);
                     userService.update(user);
                     req.setAttribute("successChange", "Пароль изменен");

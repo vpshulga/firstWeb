@@ -19,7 +19,7 @@ import services.*;
 import services.impl.*;
 import web.command.Controller;
 
-public class DoctorController implements Controller{
+public class DoctorController implements Controller {
     private AppointmentService appointmentService = AppointmentServiceImpl.getInstance();
     private PatientService patientService = PatientServiceImpl.getInstance();
     private DoctorService doctorService = DoctorServiceImpl.getInstance();
@@ -56,10 +56,10 @@ public class DoctorController implements Controller{
     private void getPatients(HttpServletRequest req, Doctor doc) {
         List<Patient> patients = new CopyOnWriteArrayList<>();
         User user = (User) req.getSession().getAttribute("user");
-        if (user != null){
+        if (user != null) {
             doc = doctorService.getDoctorByUID(user.getId());
         }
-        if (doc != null){
+        if (doc != null) {
             patients = patientService.getAllByDoctorId(doc.getId());
         }
         req.setAttribute("patients", patients);
@@ -67,13 +67,13 @@ public class DoctorController implements Controller{
 
     private void addOrUpdateDiagnosys(HttpServletRequest req) {
         List<Diagnosys> diagnoses = diagnosysService.getAll();
-        if (req.getParameter("patientDiaId") != null && req.getParameter("diagnosys") != null){
+        if (req.getParameter("patientDiaId") != null && req.getParameter("diagnosys") != null) {
             Diagnosys diagnosys = diagnosysService.getByPatientId(Integer.parseInt(req.getParameter("patientDiaId")));
             int count = 0;
-            if (diagnoses.size() > 0){
+            if (diagnoses.size() > 0) {
                 for (Diagnosys d : diagnoses) {
                     if (d.equals(diagnosys)) {
-                        count ++;
+                        count++;
                     }
                 }
             }
@@ -92,10 +92,10 @@ public class DoctorController implements Controller{
 
     private void addAppointment(HttpServletRequest req) {
         if (req.getParameter("patientAppId") != null && req.getParameter("appointment") != null
-                && !"".equals(req.getParameter("appointment"))){
+                && !"".equals(req.getParameter("appointment"))) {
             Appointment doneAppointment = appointmentService.save(new Appointment(patientService.get(Integer.parseInt(req.getParameter("patientAppId"))),
-                     AppointmentsType.valueOf(req.getParameter("appointmentType")),
-                     req.getParameter("appointment")));
+                    AppointmentsType.valueOf(req.getParameter("appointmentType")),
+                    req.getParameter("appointment")));
             req.setAttribute("doneAppointment", doneAppointment);
         }
     }

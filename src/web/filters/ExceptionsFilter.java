@@ -30,7 +30,6 @@ public class ExceptionsFilter implements Filter {
             req.setAttribute("errorMsg", "error " + e.getMessage());
 
 
-
             LOGGER.warn(ExceptionUtils.getStackTrace(e));
             try {
                 req.getRequestDispatcher(MAIN_PAGE).forward(req, resp);

@@ -13,15 +13,15 @@ public class UserDaoTest {
     private UserDAO userDAO = UserDAOImpl.getInstance();
 
     @Test
-    public void userTest() throws SQLException{
+    public void userTest() throws SQLException {
         User user = new User("log1", "pass1", Roles.PATIENT);
         List<String> list = userDAO.getAllLogins();
-        System.out.println(userDAO.getAllLogins());
-        if (!list.contains("log1")){
-            userDAO.save(user);
-        } else {
-            System.out.println(123);
-        }
+        int before = list.size();
+        userDAO.save(user);
+        List<String> newList = userDAO.getAllLogins();
+        int after = newList.size();
+        Assert.assertEquals(user.getLogin(), newList.get(newList.size() - 1));
+        Assert.assertNotSame(list, newList);
 
     }
 

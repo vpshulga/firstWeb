@@ -4,15 +4,15 @@ import web.command.Controller;
 import web.command.impl.*;
 
 public enum CommandType {
-    LOGIN("login/login.jsp", "Login","login.title", new LoginController()),
+    LOGIN("login/login.jsp", "Login", "login.title", new LoginController()),
     LOGOUT("login/login.jsp", "Logout", "logout.title", new LogoutController()),
     CARD("card/main.jsp", "Card", "card.title", new CardController()),
     REGISTRATION("registration/main.jsp", "Registration", "registration.title", new RegistrationController()),
     DOCTOR("doctor/main.jsp", "Doctor", "doctor.title", new DoctorController()),
     CHECK("check/main.jsp", "Check", "check.title", new CheckController()),
     ADMIN("admin/main.jsp", "Admin", "admin.title", new AdminController()),
-    WORKERS("workers/main.jsp", "Workers", "workers.title",new WorkersController()),
-    CHANGE("login/change.jsp", "Change", "change.title",new ChangeController());
+    WORKERS("workers/main.jsp", "Workers", "workers.title", new WorkersController()),
+    CHANGE("login/change.jsp", "Change", "change.title", new ChangeController());
 
     CommandType(String pagePath, String pageName, String i18nKey, Controller controller) {
         this.pagePath = pagePath;

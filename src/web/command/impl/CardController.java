@@ -36,8 +36,8 @@ public class CardController implements Controller {
 
         }
         if (user != null && (user.getRole().equals(Roles.DOCTOR)
-                || user.getRole().equals(Roles.ADMIN))){
-            if (req.getParameter("id") != null){
+                || user.getRole().equals(Roles.ADMIN))) {
+            if (req.getParameter("id") != null) {
                 Patient patient = patientService.get(Integer.parseInt(req.getParameter("id")));
                 List<Appointment> appointments = appointmentService.getAllByPatientId(patient.getId());
                 Diagnosys diagnosys = diagnosysService.getByPatientId(patient.getId());

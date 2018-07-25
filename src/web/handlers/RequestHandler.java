@@ -7,7 +7,7 @@ import web.command.enums.CommandType;
 import static web.command.enums.CommandType.WORKERS;
 
 public class RequestHandler {
-    public static CommandType getCommand(HttpServletRequest req){
+    public static CommandType getCommand(HttpServletRequest req) {
         String param = req.getParameter("command");
         if (param == null || "".equals(param)) {
             param = "workers";
@@ -18,7 +18,7 @@ public class RequestHandler {
         req.setAttribute("title", type.getI18nKey());
         req.setAttribute("title", type.getPageName());
         HttpSession session = req.getSession();
-        String pageName = (String)session.getAttribute("pageName");
+        String pageName = (String) session.getAttribute("pageName");
         if (pageName != null) {
             session.setAttribute("prevPage", pageName);
             session.setAttribute("pageName", type.getPageName());

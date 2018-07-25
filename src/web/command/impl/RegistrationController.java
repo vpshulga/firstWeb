@@ -50,9 +50,9 @@ public class RegistrationController implements Controller {
                     Integer.parseInt(req.getParameter("age")), Sex.valueOf(req.getParameter("sex")),
                     req.getParameter("city"), req.getParameter("street"), Integer.parseInt(req.getParameter("house")),
                     Integer.parseInt(req.getParameter("apartament")), req.getParameter("complaint"),
-                    Integer.parseInt(req.getParameter("doctorId")), currentDateTime , user.getId()));
+                    Integer.parseInt(req.getParameter("doctorId")), currentDateTime, user.getId()));
             String password = generatePassword();
-            String userName = "pat"+patient.getId();
+            String userName = "pat" + patient.getId();
             user.setLogin(userName);
             user.setPassword(password);
             user.setRole(Roles.PATIENT);
@@ -72,7 +72,7 @@ public class RegistrationController implements Controller {
         return false;
     }
 
-    private String generatePassword(){
+    private String generatePassword() {
         String template = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_$";
         Random random = new Random();
         StringBuilder pass = new StringBuilder();

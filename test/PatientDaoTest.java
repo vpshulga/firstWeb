@@ -18,7 +18,7 @@ public class PatientDaoTest {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String currentDateTime = sdf.format(date);
         Patient patient = new Patient("S", "S", 10, Sex.MALE, "N",
-                "V", 9, 4, "AAA", 1, currentDateTime, 2  );
+                "V", 9, 4, "AAA", 1, currentDateTime, 2);
         Patient newPatient = patientDAO.save(patient);
         Assert.assertSame(newPatient, patient);
 
@@ -39,7 +39,6 @@ public class PatientDaoTest {
         patientDAO.save(newPatient);
         int after = patientDAO.getAllByDoctorId(1).size();
         Assert.assertNotSame(before, after);
-
 
 
     }

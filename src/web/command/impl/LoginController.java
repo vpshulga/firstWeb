@@ -12,7 +12,6 @@ import services.impl.UserServiceImpl;
 import web.command.Controller;
 
 
-
 public class LoginController implements Controller {
     private UserService userService = UserServiceImpl.getInstance();
 
@@ -45,7 +44,7 @@ public class LoginController implements Controller {
             String contextPath = req.getContextPath();
             resp.sendRedirect(contextPath + "/frontController?command=card");
             return;
-        } else if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.ADMIN)){
+        } else if (user != null && password.equals(user.getPassword()) && user.getRole().equals(Roles.ADMIN)) {
             req.getSession().setAttribute("user", user);
             String contextPath = req.getContextPath();
             resp.sendRedirect(contextPath + "/frontController?command=admin");
