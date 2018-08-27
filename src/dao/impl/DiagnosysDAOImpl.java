@@ -2,14 +2,13 @@ package dao.impl;
 
 import dao.DaoUtils;
 import dao.DiagnosysDAO;
+import dao.PatientDAO;
 import db.ConnectionManager;
 import entities.cards.Diagnosys;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import services.PatientService;
-import services.impl.PatientServiceImpl;
 
 public class DiagnosysDAOImpl implements DiagnosysDAO {
     private static volatile DiagnosysDAO INSTANCE = null;
@@ -45,7 +44,7 @@ public class DiagnosysDAOImpl implements DiagnosysDAO {
 
     private PreparedStatement psDiaDeleteByPatId;
 
-    private PatientService psi = PatientServiceImpl.getInstance();
+    private PatientDAO psi = PatientDAOImpl.getInstance();
 
     {
         try {

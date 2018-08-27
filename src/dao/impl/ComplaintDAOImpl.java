@@ -3,12 +3,11 @@ package dao.impl;
 
 import dao.ComplaintDAO;
 import dao.DaoUtils;
+import dao.PatientDAO;
 import db.ConnectionManager;
 import entities.cards.Complaint;
 import java.io.Serializable;
 import java.sql.*;
-import services.PatientService;
-import services.impl.PatientServiceImpl;
 
 public class ComplaintDAOImpl implements ComplaintDAO {
     private static volatile ComplaintDAO INSTANCE = null;
@@ -28,7 +27,7 @@ public class ComplaintDAOImpl implements ComplaintDAO {
 
     private PreparedStatement psComDelete;
 
-    private PatientService psi = PatientServiceImpl.getInstance();
+    private PatientDAO psi = PatientDAOImpl.getInstance();
 
     {
         try {
@@ -83,7 +82,6 @@ public class ComplaintDAOImpl implements ComplaintDAO {
         ResultSet rs = psComGet.getResultSet();
         if (rs.next()){
             complaint.setId(rs.getInt(1));
-
             complaint.setPatient(psi.get(rs.getInt(2)));
             complaint.setText(rs.getString(3));
         }

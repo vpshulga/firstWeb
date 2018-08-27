@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import services.DoctorService;
 import services.NurseService;
 import services.RegistryWorkerService;
@@ -19,9 +20,11 @@ public class WorkersController implements Controller {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.getServletContext().setAttribute("doctors", doctorService.getAll());
-        req.getServletContext().setAttribute("nurses", nurseService.getAll());
-        req.getServletContext().setAttribute("regWorkers", registryWorkerService.getAll());
+
+        HttpSession session = req.getSession();
+        session.getServletContext().setAttribute("doctors", doctorService.getAll());
+        session.getServletContext().setAttribute("nurses", nurseService.getAll());
+        session.getServletContext().setAttribute("regWorkers", registryWorkerService.getAll());
         req.getRequestDispatcher(MAIN_PAGE).forward(req, resp);
     }
 }

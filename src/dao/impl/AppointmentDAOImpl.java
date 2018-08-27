@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.AppointmentDAO;
 import dao.DaoUtils;
+import dao.PatientDAO;
 import db.ConnectionManager;
 import entities.cards.Appointment;
 import enums.AppointmentsType;
@@ -9,8 +10,6 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import services.PatientService;
-import services.impl.PatientServiceImpl;
 
 public class AppointmentDAOImpl implements AppointmentDAO {
     private static volatile AppointmentDAO INSTANCE = null;
@@ -38,7 +37,7 @@ public class AppointmentDAOImpl implements AppointmentDAO {
 
     private PreparedStatement psDeleteByPatId;
 
-    private PatientService psi = PatientServiceImpl.getInstance();
+    private PatientDAO psi = PatientDAOImpl.getInstance();
 
     {
         try {
